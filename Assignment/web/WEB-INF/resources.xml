@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<resources>
+  <Resource id="jdbc/classicmodels" type="javax.sql.DataSource">#Sat Jun 29 19:50:21 SGT 2019
+jdbcDriver=com.mysql.jdbc.Driver
+password=mysql
+userName=root
+jdbcUrl=jdbc\:mysql\://localhost\:3306/classicmodels
+</Resource>
+</resources>
