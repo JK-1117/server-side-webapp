@@ -89,6 +89,9 @@ public class servletPageRouter extends HttpServlet {
         else if(url.equals("/User")) {
             page = "user";
         }
+        else {
+            page = "error";
+        }
         
         PrintWriter out = response.getWriter();
         out.println("<html>");
