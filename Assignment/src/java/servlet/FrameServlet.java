@@ -5,21 +5,28 @@
  */
 package servlet;
 
+import entity.Product;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.List;
+import javax.ejb.EJB;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import sessionBean.sessionbeanProduct;
 
 /**
  *
  * @author JK
  */
-@WebServlet(name = "FrameServlet", urlPatterns = {"/FrameServlet"})
+@WebServlet(name = "FrameServlet", urlPatterns = {"/Home", "/Product", "/Contact", "/Profile", "/Order", "/Payment", "/Customer", "/Office", "/Employee", "/ProductLine", "/User"})
 public class FrameServlet extends HttpServlet {
+
+    @EJB
+    private sessionbeanProduct sessionbeanProduct;
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
@@ -37,7 +44,45 @@ public class FrameServlet extends HttpServlet {
         response.setContentType("text/html");
         
         String title = "Kool Store";
-        String page = (String)request.getAttribute("page");
+        String url = request.getServletPath();
+        String page = "home";
+
+        
+        if(url.equals("/Home")) {
+            page = "home";
+        }
+        else if(url.equals("/Product")) {
+            page = "product";
+            List<Product> listProducts = sessionbeanProduct.getAllProducts();
+            request.setAttribute("listProducts", listProducts);
+        }
+        else if(url.equals("/Contact")) {
+            page = "contact";
+        }
+        else if(url.equals("/Profile")) {
+            page = "profile";
+        }
+        else if(url.equals("/Order")) {
+            page = "order";
+        }
+        else if(url.equals("/Payment")) {
+            page = "payment";
+        }
+        else if(url.equals("/Customer")) {
+            page = "customer";
+        }
+        else if(url.equals("/Office")) {
+            page = "office";
+        }
+        else if(url.equals("/Employee")) {
+            page = "employee";
+        }
+        else if(url.equals("/ProductLine")) {
+            page = "productline";
+        }
+        else if(url.equals("/User")) {
+            page = "user";
+        }
         
         PrintWriter out = response.getWriter();
         out.println("<html>");
