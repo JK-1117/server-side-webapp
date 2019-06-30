@@ -30,10 +30,10 @@ import javax.xml.bind.annotation.XmlTransient;
 @Table(name = "productlines")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "Productline.findAll", query = "SELECT p FROM Productline p")
-    , @NamedQuery(name = "Productline.findByProductLine", query = "SELECT p FROM Productline p WHERE p.productLine = :productLine")
-    , @NamedQuery(name = "Productline.findByTextDescription", query = "SELECT p FROM Productline p WHERE p.textDescription = :textDescription")})
-public class Productline implements Serializable {
+    @NamedQuery(name = "ProductLine.findAll", query = "SELECT p FROM ProductLine p")
+    , @NamedQuery(name = "ProductLine.findByProductLine", query = "SELECT p FROM ProductLine p WHERE p.productLine = :productLine")
+    , @NamedQuery(name = "ProductLine.findByTextDescription", query = "SELECT p FROM ProductLine p WHERE p.textDescription = :textDescription")})
+public class ProductLine implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -55,10 +55,10 @@ public class Productline implements Serializable {
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "productLine")
     private List<Product> productList;
 
-    public Productline() {
+    public ProductLine() {
     }
 
-    public Productline(String productLine) {
+    public ProductLine(String productLine) {
         this.productLine = productLine;
     }
 
@@ -113,10 +113,10 @@ public class Productline implements Serializable {
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Productline)) {
+        if (!(object instanceof ProductLine)) {
             return false;
         }
-        Productline other = (Productline) object;
+        ProductLine other = (ProductLine) object;
         if ((this.productLine == null && other.productLine != null) || (this.productLine != null && !this.productLine.equals(other.productLine))) {
             return false;
         }
