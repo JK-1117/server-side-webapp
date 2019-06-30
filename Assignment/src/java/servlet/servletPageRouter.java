@@ -6,6 +6,7 @@
 package servlet;
 
 import entity.Product;
+import entity.ProductLine;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.List;
@@ -15,15 +16,18 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 import sessionBean.sessionbeanProduct;
+import sessionBean.sessionbeanProductLine;
 
 /**
  *
  * @author JK
  */
 @WebServlet(name = "FrameServlet", urlPatterns = {"/Home", "/Product", "/Contact", "/Profile", "/Order", "/Payment", "/Customer", "/Office", "/Employee", "/ProductLine", "/User"})
-public class FrameServlet extends HttpServlet {
+public class servletPageRouter extends HttpServlet {
+
+    @EJB
+    private sessionbeanProductLine sessionbeanProductLine;
 
     @EJB
     private sessionbeanProduct sessionbeanProduct;
@@ -50,6 +54,8 @@ public class FrameServlet extends HttpServlet {
         
         if(url.equals("/Home")) {
             page = "home";
+            List<ProductLine> listProductLine = sessionbeanProductLine.getAllProductLine();
+            request.setAttribute("listProductLine", listProductLine);
         }
         else if(url.equals("/Product")) {
             page = "product";
@@ -96,15 +102,13 @@ public class FrameServlet extends HttpServlet {
                 out.println("</head>");
             out.println("<body>");
 
+                request.getRequestDispatcher("./header.jsp").include(request, response);
+                    
                 out.println("<div class=\"container\">");
-                    request.getRequestDispatcher("./header.jsp").include(request, response);
+                    request.getRequestDispatcher("./" + page + ".jsp").include(request, response);
+                out.println("</div>");
                     
-                    out.println("<div class=\"container\">");
-                        request.getRequestDispatcher("./" + page + ".jsp").include(request, response);
-                    out.println("</div>");
-                    
-                    request.getRequestDispatcher("./footer.jsp").include(request, response);
-                out.println("<div>");
+                request.getRequestDispatcher("./footer.jsp").include(request, response);
 
             out.println("</body>");
             out.println("<script src=\"js/bootstrap.js ></script>");

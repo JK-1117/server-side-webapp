@@ -88,7 +88,7 @@ public class Product implements Serializable {
     private List<Orderdetail> orderdetailList;
     @JoinColumn(name = "productLine", referencedColumnName = "productLine")
     @ManyToOne(optional = false)
-    private Productline productLine;
+    private ProductLine productLine;
 
     public Product() {
     }
@@ -181,11 +181,11 @@ public class Product implements Serializable {
         this.orderdetailList = orderdetailList;
     }
 
-    public Productline getProductLine() {
+    public ProductLine getProductLine() {
         return productLine;
     }
 
-    public void setProductLine(Productline productLine) {
+    public void setProductLine(ProductLine productLine) {
         this.productLine = productLine;
     }
 

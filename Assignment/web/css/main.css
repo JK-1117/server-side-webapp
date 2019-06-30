@@ -4,3 +4,10 @@
 .navbar {
     margin-bottom: 0px;
 }
+.container {
+    background-color: #fcfcfc;
+}
+
+section {
+    padding: 15px;
+}
