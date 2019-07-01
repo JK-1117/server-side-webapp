@@ -5,6 +5,7 @@
  */
 package sessionBean;
 
+import entity.Product;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -31,6 +32,17 @@ public class sessionbeanProductLine {
         
         return q.getResultList();
     }
+
+    public ProductLine searchProductLine(String productLine) {
+        Query q = em.createNamedQuery("ProductLine.findByProductLine");
+        q.setParameter("productLine", productLine);
+
+        return (ProductLine) q.getSingleResult();
+    }
     
-    
+    public List<Product> getProductList(String productLine) {
+        ProductLine proLine = searchProductLine(productLine);
+        
+        return proLine.getProductList();
+    }
 }

@@ -18,16 +18,35 @@
     <div class="col-sm-12">
         <h4>Product Line</h4>
     </div>
-    <div class="col-sm-12">
-        <div class="btn-group-justified">
+    <div class="col-sm-12 container">
+        <div class="row" id="productLine">
             <%
                 while (i.hasNext()) {
                     ProductLine proLine = (ProductLine) i.next();
-                    out.println("<a href=\"#\" class=\"btn btn-default\">");
-                        out.println(proLine.getProductLine());
+                    out.println("<a href=\"Product?productLine=" + proLine.getProductLine() + "\" class=\"btn btn-default col-sm-3 col-xs-4\">");
+                    out.println(proLine.getProductLine());
                     out.println("</a>");
                 }
             %>
         </div>
     </div>
 </section>
+
+<script>
+    $(function () {
+    })
+    $(window).resize(function () {
+        winWidth = $(window).width();
+
+        if (winWidth > 992) {
+            $("#productLine")
+                    .removeClass("row")
+                    .addClass("btn-group-justified");
+        }
+        else {
+            $("#productLine")
+                    .removeClass("btn-group-justified")
+                    .addClass("row");
+        }
+    });
+</script>

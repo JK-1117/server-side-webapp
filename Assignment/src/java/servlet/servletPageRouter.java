@@ -59,8 +59,19 @@ public class servletPageRouter extends HttpServlet {
         }
         else if(url.equals("/Product")) {
             page = "product";
-            List<Product> listProducts = sessionbeanProduct.getAllProducts();
+            String productLine = "";
+            List<Product> listProducts = null;
+            
+            if(request.getParameter("productLine") != null) {
+                productLine = (String)request.getParameter("productLine");
+                listProducts = sessionbeanProductLine.getProductList(productLine);
+            }
+            else {
+                listProducts = sessionbeanProduct.getAllProducts();
+            }
+            
             request.setAttribute("listProducts", listProducts);
+            request.setAttribute("productLine", productLine);
         }
         else if(url.equals("/Contact")) {
             page = "contact";
