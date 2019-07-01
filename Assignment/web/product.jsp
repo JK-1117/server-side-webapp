@@ -18,7 +18,7 @@
 %>
 <h3><%=productLine%>PRODUCT</h3>
 <small>Showing 10 results</small>
-
+<% //TODO: sorting & select productline & probably search %>
 <div class="tab-content">
 <%  
     int index = 0;
