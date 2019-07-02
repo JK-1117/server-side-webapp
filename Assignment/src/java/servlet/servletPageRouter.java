@@ -23,7 +23,7 @@ import sessionBean.sessionbeanProductLine;
  *
  * @author JK
  */
-@WebServlet(name = "FrameServlet", urlPatterns = {"/Home", "/Product", "/Contact", "/Order", "/Payment", "/Customer", "/Office", "/Employee", "/ProductLine", "/User"})
+@WebServlet(name = "FrameServlet", urlPatterns = {"/Home", "/Product", "/Contact", "/Order", "/Payment", "/Customer", "/Office", "/Employee", "/ProductLine", "/User", "/error"})
 public class servletPageRouter extends HttpServlet {
 
     @EJB
@@ -54,14 +54,12 @@ public class servletPageRouter extends HttpServlet {
         
         if(url.equals("/Home")) {
             page = "/servletHome";
-            List<ProductLine> listProductLine = sessionbeanProductLine.getAllProductLine();
-            request.setAttribute("listProductLine", listProductLine);
         }
         else if(url.equals("/Product")) {
             page = "/servletProductSearch";
         }
         else if(url.equals("/Contact")) {
-            page = "./contact.jsp";
+            page = "/contact.jsp";
         }
         else if(url.equals("/Order")) {
             page = "/servletOrderSearch";
@@ -85,7 +83,7 @@ public class servletPageRouter extends HttpServlet {
             page = "/servletProductLineUpdate";
         }
         else {
-            page = "./error.jsp";
+            page = "/error.jsp";
         }
         
         PrintWriter out = response.getWriter();
@@ -100,13 +98,13 @@ public class servletPageRouter extends HttpServlet {
                 out.println("</head>");
             out.println("<body>");
 
-                request.getRequestDispatcher("./header.jsp").include(request, response);
+                request.getRequestDispatcher("/header.jsp").include(request, response);
                     
                 out.println("<div class=\"container\">");
                     request.getRequestDispatcher(page).include(request, response);
                 out.println("</div>");
                     
-                request.getRequestDispatcher("./footer.jsp").include(request, response);
+                request.getRequestDispatcher("/footer.jsp").include(request, response);
 
             out.println("</body>");
             out.println("<script src=\"js/bootstrap.js ></script>");

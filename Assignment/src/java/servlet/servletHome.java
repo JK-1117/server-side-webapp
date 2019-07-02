@@ -5,6 +5,7 @@
  */
 package servlet;
 
+import entity.Product;
 import entity.ProductLine;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -16,6 +17,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import sessionBean.sessionbeanOrderDetail;
 import sessionBean.sessionbeanProductLine;
 
 /**
@@ -24,6 +26,9 @@ import sessionBean.sessionbeanProductLine;
  */
 @WebServlet(name = "servletHome", urlPatterns = {"/servletHome"})
 public class servletHome extends HttpServlet {
+
+    @EJB
+    private sessionbeanOrderDetail sessionbeanOrderDetail;
 
     @EJB
     private sessionbeanProductLine sessionbeanProductLine;
@@ -44,8 +49,10 @@ public class servletHome extends HttpServlet {
 
         try (PrintWriter out = response.getWriter()) {
             List<ProductLine> listProductLine = sessionbeanProductLine.getAllProductLine();
+            List<Product> listTopSalesProduct = sessionbeanOrderDetail.getTopSalesProduct();
             Iterator i = listProductLine.iterator();
-            request.setAttribute("listProductLine", listProductLine);
+            Iterator j = listTopSalesProduct.iterator();
+            
             out.println("<h1>HOME</h1>");
 
             out.println("<section class=\"row\">");
@@ -63,6 +70,26 @@ public class servletHome extends HttpServlet {
                     out.println("</div>");
                 out.println("</div>");
             out.println("</section>");
+
+            out.println("<section class=\"row\">");
+                out.println("<div class=\"col-xs-12\">");
+                    out.println("<h4>Top Sales <span class=\"label label-danger\">HOT</span></h4>");
+                out.println("</div>");
+                out.println("<div class=\"col-xs-12 list-group\">");
+                    while (j.hasNext()) {
+                        Product pro = (Product) j.next();
+                        Long quantitySold = sessionbeanOrderDetail.getQuantitySold(pro);
+                        out.println("<a href=\"#\" class=\"list-group-item list-group-item-danger\" >");
+                            out.println("<h4 class=\"list-group-item-heading\" >");
+                            out.println(pro.getProductName());
+                            out.println("<span class=\"label label-danger\">" + quantitySold + " Sold</span>");
+                            out.println("</h4><p class=\"list-group-item-text\" >");
+                            out.println(pro.getProductDescription());
+                        out.println("</p></a>");
+                    }
+                out.println("</div>");
+            out.println("</section>");
+            
             out.println("<script src=\"js/homejs.js\"></script>");
         }
     }

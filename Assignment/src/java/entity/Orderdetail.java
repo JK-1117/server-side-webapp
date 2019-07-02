@@ -32,7 +32,9 @@ import javax.xml.bind.annotation.XmlRootElement;
     , @NamedQuery(name = "Orderdetail.findByProductCode", query = "SELECT o FROM Orderdetail o WHERE o.orderdetailPK.productCode = :productCode")
     , @NamedQuery(name = "Orderdetail.findByQuantityOrdered", query = "SELECT o FROM Orderdetail o WHERE o.quantityOrdered = :quantityOrdered")
     , @NamedQuery(name = "Orderdetail.findByPriceEach", query = "SELECT o FROM Orderdetail o WHERE o.priceEach = :priceEach")
-    , @NamedQuery(name = "Orderdetail.findByOrderLineNumber", query = "SELECT o FROM Orderdetail o WHERE o.orderLineNumber = :orderLineNumber")})
+    , @NamedQuery(name = "Orderdetail.findByOrderLineNumber", query = "SELECT o FROM Orderdetail o WHERE o.orderLineNumber = :orderLineNumber")
+    , @NamedQuery(name = "Orderdetail.getTopSalesProduct", query = "SELECT o.product FROM Orderdetail o GROUP BY o.product ORDER BY SUM(o.quantityOrdered) DESC")
+    , @NamedQuery(name = "Orderdetail.getQuantitySoldByProduct", query = "SELECT SUM(o.quantityOrdered) AS quantitySold FROM Orderdetail o WHERE o.product = :product")})
 public class Orderdetail implements Serializable {
 
     private static final long serialVersionUID = 1L;
