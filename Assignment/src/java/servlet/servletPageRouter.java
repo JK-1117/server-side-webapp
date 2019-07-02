@@ -23,7 +23,7 @@ import sessionBean.sessionbeanProductLine;
  *
  * @author JK
  */
-@WebServlet(name = "FrameServlet", urlPatterns = {"/Home", "/Product", "/Contact", "/Profile", "/Order", "/Payment", "/Customer", "/Office", "/Employee", "/ProductLine", "/User"})
+@WebServlet(name = "FrameServlet", urlPatterns = {"/Home", "/Product", "/Contact", "/Order", "/Payment", "/Customer", "/Office", "/Employee", "/ProductLine", "/User"})
 public class servletPageRouter extends HttpServlet {
 
     @EJB
@@ -53,55 +53,39 @@ public class servletPageRouter extends HttpServlet {
 
         
         if(url.equals("/Home")) {
-            page = "home";
+            page = "/servletHome";
             List<ProductLine> listProductLine = sessionbeanProductLine.getAllProductLine();
             request.setAttribute("listProductLine", listProductLine);
         }
         else if(url.equals("/Product")) {
-            page = "product";
-            String productLine = "";
-            List<Product> listProducts = null;
-            
-            if(request.getParameter("productLine") != null) {
-                productLine = (String)request.getParameter("productLine");
-                listProducts = sessionbeanProductLine.getProductList(productLine);
-            }
-            else {
-                listProducts = sessionbeanProduct.getAllProducts();
-            }
-            
-            request.setAttribute("listProducts", listProducts);
-            request.setAttribute("productLine", productLine);
+            page = "/servletProductSearch";
         }
         else if(url.equals("/Contact")) {
-            page = "contact";
-        }
-        else if(url.equals("/Profile")) {
-            page = "profile";
+            page = "./contact.jsp";
         }
         else if(url.equals("/Order")) {
-            page = "order";
+            page = "/servletOrderSearch";
         }
         else if(url.equals("/Payment")) {
-            page = "payment";
+            page = "/servletPaymentSearch";
         }
         else if(url.equals("/Customer")) {
-            page = "customer";
-        }
-        else if(url.equals("/Office")) {
-            page = "office";
+            page = "/servletCustomerSearch";
         }
         else if(url.equals("/Employee")) {
-            page = "employee";
+            page = "/servletEmployeeSearch";
+        }
+        else if(url.equals("/Office")) {
+            page = "/servletOfficeUpdate";
         }
         else if(url.equals("/ProductLine")) {
-            page = "productline";
+            page = "/servletProductLineUpdate";
         }
         else if(url.equals("/User")) {
-            page = "user";
+            page = "/servletProductLineUpdate";
         }
         else {
-            page = "error";
+            page = "./error.jsp";
         }
         
         PrintWriter out = response.getWriter();
@@ -119,7 +103,7 @@ public class servletPageRouter extends HttpServlet {
                 request.getRequestDispatcher("./header.jsp").include(request, response);
                     
                 out.println("<div class=\"container\">");
-                    request.getRequestDispatcher("./" + page + ".jsp").include(request, response);
+                    request.getRequestDispatcher(page).include(request, response);
                 out.println("</div>");
                     
                 request.getRequestDispatcher("./footer.jsp").include(request, response);
