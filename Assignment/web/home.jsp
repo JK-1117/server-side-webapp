@@ -11,10 +11,16 @@
 <%@page language="java" import="entity.ProductLine" %>
 <%@page language="java" import="sessionBean.sessionbeanOrderDetail" %>
 <%
+    String username = "";
+    String role = "";
     List<ProductLine> listProductLine = null;
     List<Product> listTopSalesProduct = null;
     sessionbeanOrderDetail sessionbeanOrderDetail = null;
 
+    if(session.getAttribute("username") != null) {
+        username = (String)session.getAttribute("username");
+        role = (String)session.getAttribute("role");
+    }
     if (request.getAttribute("listProductLine") != null) {
         listProductLine = (List<ProductLine>) request.getAttribute("listProductLine");
     }
@@ -30,7 +36,8 @@
 %>
 
 <h1>HOME</h1>
-
+<%=username%>
+<%=role%>
 <section class="row">
     <div class="col-sm-12">
         <h4>Product Line</h4>
@@ -51,7 +58,7 @@
 
 <section class="row">
     <div class="col-xs-12">
-        <h4>Top Sales <span class="label label-danger">HOT</span></h4>
+        <h4>Top Sales <span class="label label-danger"><span class="glyphicon glyphicon-fire"></span> HOT</span></h4>
     </div>
     <div class="col-xs-12 list-group">
         <%
@@ -70,4 +77,18 @@
     </div>
 </section>
 
-<script src="js/homejs.js"></script>
+<script type="text/javascript">
+$(window).resize(function () {
+    winWidth = $(window).width();
+
+    if (winWidth > 992) {
+        $("#productLine")
+                .removeClass("row")
+                .addClass("btn-group-justified");
+    } else {
+        $("#productLine")
+                .removeClass("btn-group-justified")
+                .addClass("row");
+    }
+});
+</script>

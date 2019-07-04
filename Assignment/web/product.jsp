@@ -56,4 +56,11 @@
             }
             out.println("</ul>");
         %>
-        <script src=\"js/productjs.js\"></script>
+<script type="text/javascript">
+function changePage(btn) {
+    $(".pagination > li").removeClass("active");
+    $(btn).parent().addClass("active");
+    $("[id^=page]").removeClass("in active");
+    $("#page" + $(btn).text()).addClass("in active");
+}
+</script>

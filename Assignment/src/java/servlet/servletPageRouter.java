@@ -92,8 +92,8 @@ public class servletPageRouter extends HttpServlet {
                 out.println("<title>" + title + "</title>");
                 out.println("<meta charset=\"UTF-8\">");
                 out.println("<meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">");
-                out.println("<link rel=\"stylesheet\" type=\"text/css\" href=\"css/bootstrap.css\" />");
-                out.println("<link rel=\"stylesheet\" type=\"text/css\" href=\"css/main.css\" />");
+                out.println("<link rel=\"stylesheet\" href=\"css/bootstrap.min.css\">");
+                out.println("<link rel=\"stylesheet\" href=\"css/main.css\">");
                 out.println("<script src=\"js/jquery-3.4.1.min.js\" ></script>");
                 out.println("</head>");
             out.println("<body>");
@@ -107,7 +107,7 @@ public class servletPageRouter extends HttpServlet {
                 request.getRequestDispatcher("/footer.jsp").include(request, response);
 
             out.println("</body>");
-            out.println("<script src=\"js/bootstrap.js ></script>");
+            out.println("<script src=\"js/bootstrap.min.js\"></script>");
         out.println("</html>");
     }
 
