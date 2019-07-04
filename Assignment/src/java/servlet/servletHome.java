@@ -45,53 +45,15 @@ public class servletHome extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");
 
-        try (PrintWriter out = response.getWriter()) {
-            List<ProductLine> listProductLine = sessionbeanProductLine.getAllProductLine();
-            List<Product> listTopSalesProduct = sessionbeanOrderDetail.getTopSalesProduct();
-            Iterator i = listProductLine.iterator();
-            Iterator j = listTopSalesProduct.iterator();
-            
-            out.println("<h1>HOME</h1>");
-
-            out.println("<section class=\"row\">");
-                out.println("<div class=\"col-sm-12\">");
-                    out.println("<h4>Product Line</h4>");
-                out.println("</div>");
-                out.println("<div class=\"col-sm-12 container\">");
-                    out.println("<div class=\"row\" id=\"productLine\">");
-                    while (i.hasNext()) {
-                        ProductLine proLine = (ProductLine) i.next();
-                        out.println("<a href=\"Product?productLine=" + proLine.getProductLine() + "\" class=\"btn btn-default col-sm-3 col-xs-4\">");
-                        out.println(proLine.getProductLine());
-                        out.println("</a>");
-                    }
-                    out.println("</div>");
-                out.println("</div>");
-            out.println("</section>");
-
-            out.println("<section class=\"row\">");
-                out.println("<div class=\"col-xs-12\">");
-                    out.println("<h4>Top Sales <span class=\"label label-danger\">HOT</span></h4>");
-                out.println("</div>");
-                out.println("<div class=\"col-xs-12 list-group\">");
-                    while (j.hasNext()) {
-                        Product pro = (Product) j.next();
-                        Long quantitySold = sessionbeanOrderDetail.getQuantitySold(pro);
-                        out.println("<a href=\"#\" class=\"list-group-item list-group-item-danger\" >");
-                            out.println("<h4 class=\"list-group-item-heading\" >");
-                            out.println(pro.getProductName());
-                            out.println("<span class=\"label label-danger\">" + quantitySold + " Sold</span>");
-                            out.println("</h4><p class=\"list-group-item-text\" >");
-                            out.println(pro.getProductDescription());
-                        out.println("</p></a>");
-                    }
-                out.println("</div>");
-            out.println("</section>");
-            
-            out.println("<script src=\"js/homejs.js\"></script>");
-        }
+        List<ProductLine> listProductLine = sessionbeanProductLine.getAllProductLine();
+        List<Product> listTopSalesProduct = sessionbeanOrderDetail.getTopSalesProduct();
+        
+        request.setAttribute("listProductLine", listProductLine);
+        request.setAttribute("listTopSalesProduct", listTopSalesProduct);
+        request.setAttribute("sessionbeanOrderDetail", sessionbeanOrderDetail);
+        
+        request.getRequestDispatcher("./home.jsp").include(request, response);
     }
 
     /**
