@@ -5,6 +5,7 @@
  */
 package servlet;
 
+import entity.User;
 import java.io.IOException;
 import javax.ejb.EJB;
 import javax.servlet.ServletException;
@@ -56,6 +57,8 @@ public class servletLogin extends HttpServlet {
             throws ServletException, IOException {
 
         HttpSession session = request.getSession();
+        response.setContentType("text/plain");
+        response.setCharacterEncoding("UTF-8");
 
         String input = "";
         String username = "";
@@ -64,14 +67,12 @@ public class servletLogin extends HttpServlet {
         input = request.getParameter("input");
         username = input.split(",")[0];
         password = input.split(",")[1];
-
-        response.setContentType("text/plain");
-        response.setCharacterEncoding("UTF-8");
-
-        if (sessionbeanUser.login(username, password)) {
+        
+        User user = sessionbeanUser.login(username, password);
+        if (user != null) {
             String role = sessionbeanUserRole.getUserRole(username);
 
-            session.setAttribute("username", username);
+            session.setAttribute("username", user.getUsername());
             session.setAttribute("role", role);
             response.getWriter().write("true");
         } else {

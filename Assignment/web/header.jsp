@@ -18,7 +18,7 @@
     if (session.getAttribute("username") != null) {
         username = (String) session.getAttribute("username");
     } else {
-        username = "Your Account";
+        username = "";
     }
 
 %>
@@ -45,7 +45,7 @@
             <li><a href="Contact">Contact</a></li>
         </ul>
         <ul class="nav navbar-nav navbar-right">
-            <li><a href="Profile"><span class="glyphicon glyphicon-user"></span> <%=username%></a></li>
+            <li><a href="Profile"><span class="glyphicon glyphicon-user"></span> My Account</a></li>
             <li><a href="Order"><span class="glyphicon glyphicon-shopping-cart"></span> Cart</a></li>
         </ul>
     </div>
@@ -54,11 +54,19 @@
     }else {
 %>
 
-<nav class="navbar navbar-inverse">
+<nav class="navbar navbar-default">
     <div class="container-fluid">
         <div class="navbar-header">
-            <a class="navbar-brand" href="Home">KoolStore</a>
+            <a class="navbar-brand" href="Order">KoolStore</a>
         </div>
+        <ul class="nav navbar-nav navbar-right">
+            <li><a><span class="glyphicon glyphicon-user"></span> <%=username%></a></li>
+            <li><a id="currentTime"></a></li>
+        </ul>
+    </div>
+</nav>
+<nav class="navbar navbar-inverse">
+    <div class="container-fluid">
         <ul class="nav navbar-nav">
             <li><a href="Order">Order</a></li>
             <li><a href="Product">Product</a></li>
@@ -68,10 +76,6 @@
             <li><a href="Office">Office</a></li>
             <li><a href="User">User</a></li>
             <li><a href="servletLogout">Logout</a></li>
-        </ul>
-        <ul class="nav navbar-nav navbar-right">
-            <li><a><span class="glyphicon glyphicon-user"></span> <%=username%></a></li>
-            <li><a id="currentTime"></a></li>
         </ul>
     </div>
 </nav>

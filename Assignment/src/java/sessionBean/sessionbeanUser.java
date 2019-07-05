@@ -25,14 +25,14 @@ public class sessionbeanUser {
         em.persist(object);
     }
 
-    public boolean login(String username, String password) {
+    public User login(String username, String password) {
         Query q = em.createNamedQuery("User.findByUsername");
         q.setParameter("username", username);
         
         User user = (User)q.getSingleResult();
         if(user.getPassword().equals(password)) {
-            return true;
+            return user;
         }
-        return false;
+        return null;
     }
 }

@@ -51,7 +51,7 @@
             <div class="modal-body">
                 <form id="frm_login" action="" method="">
                     <div class="form-group">
-                        <input type="text" class="form-control" id="username" name="username" placeholder="Username" required="required">
+                        <input type="text" class="form-control" id="username" name="username" placeholder="Username" required="required" autofocus="autofocus">
                     </div>
                     <div class="form-group">
                         <input type="password" class="form-control" id="password" name="password" placeholder="Password" required="required">	
@@ -88,7 +88,7 @@
             data: {input: input},
             success: function (result) {
                 if (result == "true") {
-                    window.location.href = "Account";
+                    window.location.href = "index.jsp";
                 } else {
                     $("#loginError").html("<div class=\"alert alert-danger\">Wrong username/password</div>");
                 }
