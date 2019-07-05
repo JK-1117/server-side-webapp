@@ -5,17 +5,15 @@
  */
 package servlet;
 
-import entity.Product;
-import entity.ProductLine;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.List;
 import javax.ejb.EJB;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import sessionBean.sessionbeanProduct;
 import sessionBean.sessionbeanProductLine;
 
@@ -45,12 +43,21 @@ public class servletPageRouter extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-        response.setContentType("text/html");
+        response.setContentType("text/html;charset=UTF-8");
         
         String title = "Kool Store";
         String url = request.getServletPath();
         String page = "home";
+        String username = "";
+        String role = "";
 
+        HttpSession session = request.getSession();
+        if(session.getAttribute("username") != null) {
+            username = (String)session.getAttribute("username");
+        }
+        if(session.getAttribute("role") != null) {
+            role = (String)session.getAttribute("role");
+        }
         
         if(url.equals("/Home")) {
             page = "/servletHome";
@@ -62,7 +69,7 @@ public class servletPageRouter extends HttpServlet {
             page = "/contact.jsp";
         }
         else if(url.equals("/Order")) {
-            page = "/servletOrderSearch";
+            page = "/servletOrdersSearch";
         }
         else if(url.equals("/Payment")) {
             page = "/servletPaymentSearch";

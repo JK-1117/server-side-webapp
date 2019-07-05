@@ -79,7 +79,6 @@
         </ul>
     </div>
 </nav>
-<% }%>
 <script type="text/javascript">
     $(function () {
         display_time();
@@ -94,3 +93,4 @@
         refresh_time();
     }
 </script>
+<% }%>
