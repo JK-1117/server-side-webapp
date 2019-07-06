@@ -8,7 +8,10 @@ package servlet;
 import entity.Orders;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.List;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.ejb.EJB;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -22,8 +25,8 @@ import sessionBean.sessionbeanOrder;
  *
  * @author JK
  */
-@WebServlet(name = "servletOrdersSearch", urlPatterns = {"/servletOrdersSearch"})
-public class servletOrdersSearch extends HttpServlet {
+@WebServlet(name = "servletOrdersUpdate", urlPatterns = {"/servletOrdersUpdate"})
+public class servletOrdersUpdate extends HttpServlet {
 
     @EJB
     private sessionbeanOrder sessionbeanOrder;
@@ -41,47 +44,6 @@ public class servletOrdersSearch extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        
-        String username = "";
-        String role = "";
-        String orderNumber = "";
-        
-        List<Orders> listOrders = null;
-        Orders orders = null;
-        HttpSession session = request.getSession();
-        
-        if(session.getAttribute("username") != null) {
-            username = (String)session.getAttribute("username");
-        }
-        if(session.getAttribute("role") != null) {
-            role = (String)session.getAttribute("role");
-        }
-
-        if (request.getParameter("orderNumber") != null) {
-            orderNumber = (String) request.getParameter("orderNumber");
-        }
-        
-        if(role.equals("")) {
-            response.setContentType("text/html;charset=UTF-8");
-            try(PrintWriter out = response.getWriter()) {
-                out.println("<h1>Please login to view orders detail</h1>");
-                out.println("<script src=\"js/bootstrap.min.js\"></script>");
-            }
-        }
-        else {
-            if(orderNumber.equals("")) {
-                listOrders = sessionbeanOrder.getAllOrders();
-                
-                request.setAttribute("listOrders", listOrders);
-                request.getRequestDispatcher("ManageTools/mtOrderList.jsp").include(request, response);
-            }
-            else {
-                orders = sessionbeanOrder.searchOrder(Integer.parseInt(orderNumber));
-                
-                request.setAttribute("orders", orders);
-                request.getRequestDispatcher("ManageTools/mtOrder.jsp").include(request, response);
-            }
-        }
     }
 
     /**
@@ -95,6 +57,49 @@ public class servletOrdersSearch extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        
+        
+        String username = "";
+        String role = "";
+        String orderNumber = "";
+        String shippedDate = "";
+        String status = "";
+        String comments = "";
+        
+        Orders orders = null;
+        HttpSession session = request.getSession();
+        
+        if(session.getAttribute("username") != null) {
+            username = (String)session.getAttribute("username");
+        }
+        if(session.getAttribute("role") != null) {
+            role = (String)session.getAttribute("role");
+        }
+
+        if (request.getParameter("orderNumber") != null) {
+            orderNumber = (String) request.getParameter("orderNumber");
+        }
+        if (request.getParameter("shippedDate") != null) {
+            shippedDate = (String) request.getParameter("shippedDate");
+        }
+        if (request.getParameter("status") != null) {
+            status = (String) request.getParameter("status");
+        }
+        if (request.getParameter("comments") != null) {
+            comments = (String) request.getParameter("comments");
+        }
+        
+        orders = sessionbeanOrder.searchOrder(Integer.parseInt(orderNumber));
+        try {
+            orders.setShippedDate(new SimpleDateFormat("dd/MM/yyyy").parse(shippedDate));
+        } catch (ParseException ex) {
+            Logger.getLogger(servletOrdersUpdate.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        orders.setStatus(status);
+        orders.setComments(comments);
+        
+        sessionbeanOrder.updateOrders(orders);
+        response.getWriter().println("<script>window.location.href='Order';</script>");
     }
 
     /**

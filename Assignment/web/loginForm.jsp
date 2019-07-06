@@ -49,7 +49,7 @@
                 <h4 class="modal-title">Member Login</h4>
             </div>
             <div class="modal-body">
-                <form id="frm_login" action="" method="">
+                <form id="frm_login" action="" method="" autocomplete="on">
                     <div class="form-group">
                         <input type="text" class="form-control" id="username" name="username" placeholder="Username" required="required" autofocus="autofocus">
                     </div>

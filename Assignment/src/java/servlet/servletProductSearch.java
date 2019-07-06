@@ -5,6 +5,7 @@
  */
 package servlet;
 
+import entity.Orders;
 import entity.Product;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -16,6 +17,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import sessionBean.sessionbeanProduct;
 import sessionBean.sessionbeanProductLine;
 
@@ -44,21 +46,49 @@ public class servletProductSearch extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        String username = "";
+        String role = "";
+        HttpSession session = request.getSession();
+        
+        if(session.getAttribute("username") != null) {
+            username = (String)session.getAttribute("username");
+        }
+        if(session.getAttribute("role") != null) {
+            role = (String)session.getAttribute("role");
+        }
 
         String productLine = "";
+        String productCode = "";
         List<Product> listProducts = null;
+        Product product = null;
 
+        if (request.getParameter("productCode") != null) {
+            productCode = (String) request.getParameter("productCode");
+        }
         if (request.getParameter("productLine") != null) {
             productLine = (String) request.getParameter("productLine");
             listProducts = sessionbeanProductLine.getProductList(productLine);
         } else {
             listProducts = sessionbeanProduct.getAllProducts();
-        }
+        }  
 
         request.setAttribute("productLine", productLine);
         request.setAttribute("listProducts", listProducts);
         
-        request.getRequestDispatcher("./product.jsp").include(request, response);
+        if(role.equals("") || role.equals("user")) {
+            request.getRequestDispatcher("./product.jsp").include(request, response);
+        }
+        else {
+            if(productCode.equals("")) {
+                request.getRequestDispatcher("ManageTools/mtProductList.jsp").include(request, response);
+            }
+            else {
+                product = sessionbeanProduct.searchProduct(productCode);
+                
+                request.setAttribute("product", product);
+                request.getRequestDispatcher("ManageTools/mtProduct.jsp").include(request, response);
+            }
+        }
     }
 
     /**

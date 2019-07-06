@@ -27,7 +27,11 @@ public class sessionbeanProduct {
 
         return q.getResultList();
     }
-
-    // Add business logic below. (Right-click in editor and choose
-    // "Insert Code > Add Business Method")
+    
+    public Product searchProduct(String productCode) {
+        Query q = em.createNamedQuery("Product.findByProductCode");
+        
+        q.setParameter("productCode", productCode);
+        return (Product)q.getSingleResult();
+    }
 }

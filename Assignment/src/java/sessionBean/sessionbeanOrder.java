@@ -21,10 +21,6 @@ public class sessionbeanOrder {
 
     @PersistenceContext(unitName = "AssignmentPU")
     private EntityManager em;
-
-    public void persist(Object object) {
-        em.persist(object);
-    }
     
     public List<Orders> getAllOrders() {
         Query q = em.createNamedQuery("Orders.findAll");
@@ -37,5 +33,9 @@ public class sessionbeanOrder {
         
         q.setParameter("orderNumber", orderNumber);
         return (Orders)q.getSingleResult();
+    }
+    
+    public void updateOrders(Orders orders) {
+        em.merge(orders);
     }
 }

@@ -34,7 +34,15 @@
 .pointer {
     cursor: pointer;
 }
-
+.table > thead > tr > th {
+    vertical-align: middle;
+}
+.descriptionTD {
+    max-width: 100px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
 section {
     padding: 15px;
 }

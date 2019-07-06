@@ -8,6 +8,7 @@ package sessionBean;
 import entity.User;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
@@ -26,13 +27,18 @@ public class sessionbeanUser {
     }
 
     public User login(String username, String password) {
-        Query q = em.createNamedQuery("User.findByUsername");
-        q.setParameter("username", username);
-        
-        User user = (User)q.getSingleResult();
-        if(user.getPassword().equals(password)) {
-            return user;
+        try {
+            Query q = em.createNamedQuery("User.findByUsername");
+            q.setParameter("username", username);
+
+            User user = (User) q.getSingleResult();
+            if (user.getPassword().equals(password)) {
+                return user;
+            }
+            return null;
+        } catch (NoResultException e) {
+            return null;
         }
-        return null;
+
     }
 }

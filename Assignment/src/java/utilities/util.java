@@ -10,13 +10,4 @@ package utilities;
  * @author JK
  */
 public class util {
-
-    public String ConvertSqlDateFormat(String strSource) {
-        strSource = strSource.trim();
-        String year = strSource.substring(6, 10).toString();
-        String month = strSource.substring(3, 5).toString();
-        String day = strSource.substring(0, 2).toString();
-        String strDate = year + "-" + month + "-" + day;
-        return strDate.toString();
-    }
 }

@@ -7,7 +7,7 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@page language="java" import="entity.Orders" %>
 <%@page language="java" import="java.util.*" %>
-<%@page language="java" import="java.text.DateFormat" %>
+<%@page language="java" import="java.text.SimpleDateFormat" %>
 <%
     List<Orders> listOrders = null;
     if(request.getAttribute("listOrders") != null) {
@@ -17,7 +17,7 @@
 <link rel="stylesheet" type="text/css" href="css/datatables.min.css"/>
 <h1>Order List</h1>
 
-<table id="table_orders" width="1000" class="table table-striped table-hover table-bordered table-sm">
+<table id="table_orders" class="table table-striped table-hover table-bordered table-sm">
     <thead>
         <tr>
             <th class="text-center" width="50">No.</th>
@@ -37,7 +37,7 @@
 
         while(i.hasNext()) {
             Orders orders = (Orders)i.next();
-            DateFormat df = DateFormat.getDateInstance(DateFormat.MEDIUM);
+            SimpleDateFormat df = new SimpleDateFormat("dd/MM/yyyy");  
 
             out.println("<tr height='40' valign='middle'>");
                 out.println("<td align='center'>" + index + ".</td>");
@@ -72,7 +72,7 @@
                 }
                 out.println("'>" + orders.getStatus().toUpperCase() + "</span></td>");
                 out.println("<td align='center'>" + orders.getCustomerNumber().getCustomerNumber() + "</td>");
-                out.println("<td align='center' onclick='window.location.href=\"Order?no=" + orders.getOrderNumber() + "\";' class='pointer'><span class=\"glyphicon glyphicon-folder-open\"></span></td>");
+                out.println("<td align='center' onclick='window.location.href=\"Order?orderNumber=" + orders.getOrderNumber() + "\";' class='pointer'><span class=\"glyphicon glyphicon-folder-open\"></span></td>");
             out.println("</tr>");
 
             index++;

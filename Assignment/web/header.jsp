@@ -45,7 +45,21 @@
             <li><a href="Contact">Contact</a></li>
         </ul>
         <ul class="nav navbar-nav navbar-right">
-            <li><a href="Profile"><span class="glyphicon glyphicon-user"></span> My Account</a></li>
+            <%
+                if(username.equals("")) {
+                    out.println("<li><a data-toggle=\"modal\" data-target=\"#loginModal\">" 
+                            + "<span class=\"glyphicon glyphicon-user\"></span> My Account</a></li>");
+                }
+                else {
+                    out.println("<li class=\"dropdown\">");
+                    out.println("<a class=\"dropdown-toggle\" data-toggle=\"dropdown\"><span class=\"glyphicon glyphicon-user\"></span> My Account<span class=\"caret\"></span></a>");
+                    out.println("<ul class=\"dropdown-menu\">");
+                    out.println("<li><a href=\"Profile\">Profile</a></li>");
+                    out.println("<li><a href=\"Order\">Order History</a></li>");
+                    out.println("<li><a href=\"Payment\">Payment History</a></li>");
+                    out.println("</ul></li>");
+                }
+            %>
             <li><a href="Order"><span class="glyphicon glyphicon-shopping-cart"></span> Cart</a></li>
         </ul>
     </div>
