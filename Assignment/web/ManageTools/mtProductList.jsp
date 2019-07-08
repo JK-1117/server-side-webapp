@@ -26,6 +26,14 @@
 %>
 <link rel="stylesheet" type="text/css" href="css/datatables.min.css"/>
 <h1>Product List</h1>
+        
+<% if(role.equals("admin")) {%>
+    <div class="row">
+        <div class="col-xs-12" style="padding: 0px 0px 25px 15px;">
+            <a href="Product?operation=New" class="btn btn-success">New <span class="glyphicon glyphicon-plus-sign"></span></a>
+        </div>
+    </div>
+<% } %>
 
 <table id="table_product" class="table table-striped table-hover table-bordered table-sm">
     <thead>
@@ -40,11 +48,7 @@
             <th class="text-center">Qty</th>
             <th class="text-center">Buy Price</th>
             <th class="text-center">MSRP</th>
-            <%
-                if(role.equals("admin")) {
-                    out.println("<th class=\"text-center\" width=\"50\">Open</th>");
-                }
-            %>
+            <th class="text-center" width="50">Open</th>
         </tr>
     </thead>
     <tbody>
@@ -66,9 +70,7 @@
                 out.println("<td>" + product.getQuantityInStock()+ "</td>");
                 out.println("<td>RM" + product.getBuyPrice()+ "</td>");
                 out.println("<td>RM" + product.getMsrp()+ "</td>");
-                if(role.equals("admin")) {
-                    out.println("<td onclick='window.location.href=\"Product?productCode=" + product.getProductCode() + "\";' class='pointer text-center'><span class=\"glyphicon glyphicon-folder-open\"></span></td>");
-                }
+                out.println("<td onclick='window.location.href=\"Product?productCode=" + product.getProductCode() + "\";' class='pointer text-center'><span class=\"glyphicon glyphicon-folder-open\"></span></td>");
             out.println("</tr>");
 
             index++;

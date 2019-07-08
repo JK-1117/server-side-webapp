@@ -37,32 +37,34 @@
     </div>
 </div>
 
-<div class="row form-group form-inline">
-    <div class="col-xs-4">
-        <label>Order Number:
-            <input type="text" readonly="readonly" value="<%=orders.getOrderNumber()%>" class="form-control" />
-        </label>
-    </div>
-    <div class="col-xs-4">
-        <label>Customer Number:
-            <input type="text" readonly="readonly" value="<%=orders.getCustomerNumber().getCustomerNumber()%>" class="form-control" />
-        </label>
-    </div>
-    <div class="col-xs-4">
-        <label>Order Date:
-            <input type="text" readonly="readonly" value="<%=df.format(orders.getOrderDate())%>" class="form-control" />
-        </label>
-    </div>
-</div>
+<div class="form-horizontal">
+    <div class="form-group">
+        <label class="control-label col-sm-2">Order Number: </label>
+        <div class="col-sm-3">
+            <input type="text" readonly value="<%=orders.getOrderNumber()%>" class="form-control" />
+        </div>
 
-<div class="row form-group form-inline">
-    <div class="col-xs-4">
-        <label>Required Date:
-            <input type="text" readonly="readonly" value="<%=df.format(orders.getRequiredDate())%>" class="form-control" />
-        </label>
+        <label class="control-label col-sm-2">Customer Number: </label>
+        <div class="col-sm-3">
+            <input type="text" readonly value="<%=orders.getCustomerNumber().getCustomerNumber()%>" class="form-control" />
+        </div>
     </div>
-    <div class="col-xs-4">
-        <label>Shipped Date:
+        
+    <div class="form-group">
+        <label class="control-label col-sm-2">Order Date: </label>
+        <div class="col-sm-3">
+            <input type="text" readonly value="<%=df.format(orders.getOrderDate())%>" class="form-control" />
+        </div>
+
+        <label class="control-label col-sm-2">Required Date: </label>
+        <div class="col-sm-3">
+            <input type="text" readonly value="<%=df.format(orders.getRequiredDate())%>" class="form-control" />
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label class="control-label col-sm-2">Shipped Date: </label>
+        <div class="col-sm-3">
             <input id="inputShippedDate" type="text" value="<%
                 if(orders.getShippedDate() == null) {
                     out.println(" - ");
@@ -71,42 +73,43 @@
                     out.println(df.format(orders.getShippedDate()));
                 }%>
                 " class="form-control datepicker" />
-        </label>
-    </div>
-    <div class="col-xs-4">
-        <label for="optionStatus">Status: </label>
-        <select class="form-control" id="optionStatus" style="width:80%;">
-            <option value="Shipped"
-                <%if(orders.getStatus().equals("Shipped")) {
-                    out.print("selected");
-                }%>
-                >Shipped</option>
-            <option value="Resolved"
-                <%if(orders.getStatus().equals("Resolved")) {
-                    out.print("selected");
-                }%>
-                >Resolved</option>
-            <option value="Cancelled"
-                <%if(orders.getStatus().equals("Cancelled")) {
-                    out.print("selected");
-                }%>
-                >Cancelled</option>
-            <option value="On Hold"
-                <%if(orders.getStatus().equals("On Hold")) {
-                    out.print("selected");
-                }%>
-                >On Hold</option>
-            <option value="Disputed"
-                <%if(orders.getStatus().equals("Disputed")) {
-                    out.print("selected");
-                }%>
-                >Disputed</option>
-            <option value="In Process"
-                <%if(orders.getStatus().equals("In Process")) {
-                    out.print("selected");
-                }%>
-                >In Process</option>
-        </select>
+        </div>
+                
+        <label for="optionStatus" class="control-label col-sm-2">Status: </label>
+        <div class="col-sm-3">
+            <select class="form-control" id="optionStatus">
+                <option value="Shipped"
+                    <%if(orders.getStatus().equals("Shipped")) {
+                        out.print("selected");
+                    }%>
+                    >Shipped</option>
+                <option value="Resolved"
+                    <%if(orders.getStatus().equals("Resolved")) {
+                        out.print("selected");
+                    }%>
+                    >Resolved</option>
+                <option value="Cancelled"
+                    <%if(orders.getStatus().equals("Cancelled")) {
+                        out.print("selected");
+                    }%>
+                    >Cancelled</option>
+                <option value="On Hold"
+                    <%if(orders.getStatus().equals("On Hold")) {
+                        out.print("selected");
+                    }%>
+                    >On Hold</option>
+                <option value="Disputed"
+                    <%if(orders.getStatus().equals("Disputed")) {
+                        out.print("selected");
+                    }%>
+                    >Disputed</option>
+                <option value="In Process"
+                    <%if(orders.getStatus().equals("In Process")) {
+                        out.print("selected");
+                    }%>
+                    >In Process</option>
+            </select>
+        </div>
     </div>
 </div>
                     
@@ -174,8 +177,8 @@
     </textarea>
 </div>
     
-<div id="dialog-confirm" title="Save Comfirmation">
-    <p><span class="ui-icon ui-icon-alert" style="float:left; margin:12px 12px 20px 0;"></span>Are you sure you want to make these changes?</p>
+<div id="dialog-confirm" title="Save Comfirmation" style="display:none;">
+    <p><span class="ui-icon ui-icon-alert"></span>Are you sure you want to make changes to this item?</p>
 </div>
 <script>
     $(function() {

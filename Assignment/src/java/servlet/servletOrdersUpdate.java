@@ -58,7 +58,6 @@ public class servletOrdersUpdate extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         
-        
         String username = "";
         String role = "";
         String orderNumber = "";

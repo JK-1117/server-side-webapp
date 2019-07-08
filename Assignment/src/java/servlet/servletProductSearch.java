@@ -5,11 +5,10 @@
  */
 package servlet;
 
-import entity.Orders;
 import entity.Product;
+import entity.ProductLine;
 import java.io.IOException;
-import java.io.PrintWriter;
-import java.util.Iterator;
+import java.math.BigDecimal;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.servlet.ServletException;
@@ -59,9 +58,14 @@ public class servletProductSearch extends HttpServlet {
 
         String productLine = "";
         String productCode = "";
+        String operation = "";
         List<Product> listProducts = null;
+        List<ProductLine> listProductLine = null;
         Product product = null;
 
+        if (request.getParameter("operation") != null) {
+            operation = (String) request.getParameter("operation");
+        }
         if (request.getParameter("productCode") != null) {
             productCode = (String) request.getParameter("productCode");
         }
@@ -79,13 +83,26 @@ public class servletProductSearch extends HttpServlet {
             request.getRequestDispatcher("./product.jsp").include(request, response);
         }
         else {
-            if(productCode.equals("")) {
+            if(operation.equals("New")) {
+                product = new Product("","","","","",(short)0,BigDecimal.ZERO,BigDecimal.ZERO);
+                product.setProductLine(sessionbeanProductLine.searchProductLine("Classic Cars"));
+                listProductLine = sessionbeanProductLine.getAllProductLine();
+                
+                request.setAttribute("operation", "New");
+                request.setAttribute("product", product);
+                request.setAttribute("listProductLine", listProductLine);
+                request.getRequestDispatcher("ManageTools/mtProduct.jsp").include(request, response);
+            }
+            else if(productCode.equals("")) {
                 request.getRequestDispatcher("ManageTools/mtProductList.jsp").include(request, response);
             }
             else {
                 product = sessionbeanProduct.searchProduct(productCode);
+                listProductLine = sessionbeanProductLine.getAllProductLine();
                 
+                request.setAttribute("operation", "Update");
                 request.setAttribute("product", product);
+                request.setAttribute("listProductLine", listProductLine);
                 request.getRequestDispatcher("ManageTools/mtProduct.jsp").include(request, response);
             }
         }
