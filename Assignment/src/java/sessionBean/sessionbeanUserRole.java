@@ -10,6 +10,7 @@ import entity.UserRolePK;
 import java.util.Iterator;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
@@ -22,9 +23,16 @@ public class sessionbeanUserRole {
 
     @PersistenceContext(unitName = "AssignmentPU")
     private EntityManager em;
+    
+    public UserRole searchUserRole(String username, String role) {
+        try {
+            Query q = em.createNamedQuery("UserRole.findByUserRolePK");
+            q.setParameter("userRolePK", new UserRolePK(username,role));
 
-    public void persist(Object object) {
-        em.persist(object);
+            return (UserRole)q.getSingleResult();
+        } catch (NoResultException e) {
+            return null;
+        }
     }
     
     public String getUserRole(String username) {
@@ -47,5 +55,23 @@ public class sessionbeanUserRole {
             }
         }
         return "";
+    }
+    
+    public void insertUserRole(String username, String role) {
+        UserRole t = new UserRole(username, role);
+        
+        em.persist(t);
+    }
+    
+    public void updateUserRole(String username, String role) {
+        UserRole t = new UserRole(username, role);
+        
+        em.merge(t);
+    }
+    
+    public void deleteUserRole(String username, String role) {
+        UserRole t = searchUserRole(username, role);
+        
+        em.remove(t);
     }
 }

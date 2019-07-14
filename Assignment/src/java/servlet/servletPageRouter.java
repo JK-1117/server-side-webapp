@@ -21,7 +21,7 @@ import sessionBean.sessionbeanProductLine;
  *
  * @author JK
  */
-@WebServlet(name = "FrameServlet", urlPatterns = {"/Home", "/Product", "/Contact", "/Order", "/Payment", "/Customer", "/Office", "/Employee", "/ProductLine", "/User", "/error"})
+@WebServlet(name = "FrameServlet", urlPatterns = {"/Home", "/Product", "/Contact", "/Cart", "/Order", "/Payment", "/Customer", "/Office", "/Employee", "/ProductLine", "/User", "/error"})
 public class servletPageRouter extends HttpServlet {
 
     @EJB
@@ -68,6 +68,9 @@ public class servletPageRouter extends HttpServlet {
         else if(url.equals("/Contact")) {
             page = "/contact.jsp";
         }
+        else if(url.equals("/Cart")) {
+            page = "/cart.jsp";
+        }
         else if(url.equals("/Order")) {
             page = "/servletOrdersSearch";
         }
@@ -87,7 +90,7 @@ public class servletPageRouter extends HttpServlet {
             page = "/servletProductLineUpdate";
         }
         else if(url.equals("/User")) {
-            page = "/servletProductLineUpdate";
+            page = "/servletUserUpdate";
         }
         else {
             page = "/error.jsp";
@@ -107,7 +110,7 @@ public class servletPageRouter extends HttpServlet {
 
                 request.getRequestDispatcher("/header.jsp").include(request, response);
                     
-                out.println("<div class=\"container\">");
+                out.println("<div class=\"container main\">");
                     request.getRequestDispatcher(page).include(request, response);
                 out.println("</div>");
                     

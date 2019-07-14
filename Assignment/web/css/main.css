@@ -7,6 +7,9 @@
 .container {
     background-color: #fcfcfc;
 }
+.main {
+    min-height: 80%;
+}
 .modal-login.modal-dialog {
     margin-top: 80px;
 }
@@ -34,15 +37,18 @@
 .pointer {
     cursor: pointer;
 }
+.table {
+    background-color: #fff;
+}
 .table > thead > tr > th {
     vertical-align: middle;
 }
-.descriptionTD {
-    max-width: 100px;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
+.error {
+    color: red;
 }
 section {
     padding: 15px;
+}
+table>thead>tr>th {
+    text-align: center;
 }

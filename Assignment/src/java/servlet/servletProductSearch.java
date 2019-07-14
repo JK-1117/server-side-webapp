@@ -9,6 +9,7 @@ import entity.Product;
 import entity.ProductLine;
 import java.io.IOException;
 import java.math.BigDecimal;
+import java.util.Comparator;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.servlet.ServletException;
@@ -58,6 +59,7 @@ public class servletProductSearch extends HttpServlet {
 
         String productLine = "";
         String productCode = "";
+        String sortBy = "";
         String operation = "";
         List<Product> listProducts = null;
         List<ProductLine> listProductLine = null;
@@ -69,6 +71,9 @@ public class servletProductSearch extends HttpServlet {
         if (request.getParameter("productCode") != null) {
             productCode = (String) request.getParameter("productCode");
         }
+        if (request.getParameter("sortBy") != null) {
+            sortBy = (String) request.getParameter("sortBy");
+        }
         if (request.getParameter("productLine") != null) {
             productLine = (String) request.getParameter("productLine");
             listProducts = sessionbeanProductLine.getProductList(productLine);
@@ -76,21 +81,40 @@ public class servletProductSearch extends HttpServlet {
             listProducts = sessionbeanProduct.getAllProducts();
         }  
 
+        if(sortBy.equals("PriceLH")) {
+            listProducts.sort(Comparator.comparing(Product::getMsrp));
+        }
+        else if(sortBy.equals("PriceHL")) {
+            listProducts.sort(Comparator.comparing(Product::getMsrp).reversed());
+        }
+        else {
+            listProducts.sort(Comparator.comparing(Product::getMsrp));
+        }
+        
+        listProductLine = sessionbeanProductLine.getAllProductLine();
+        request.setAttribute("sortBy", sortBy);
         request.setAttribute("productLine", productLine);
         request.setAttribute("listProducts", listProducts);
+        request.setAttribute("listProductLine", listProductLine);
         
         if(role.equals("") || role.equals("user")) {
-            request.getRequestDispatcher("./product.jsp").include(request, response);
+            if(productCode.equals("")) {
+                request.getRequestDispatcher("./productList.jsp").include(request, response);
+            }
+            else {
+                product = sessionbeanProduct.searchProduct(productCode);
+                
+                request.setAttribute("product", product);
+                request.getRequestDispatcher("./product.jsp").include(request, response);
+            }
         }
         else {
             if(operation.equals("New")) {
                 product = new Product("","","","","",(short)0,BigDecimal.ZERO,BigDecimal.ZERO);
                 product.setProductLine(sessionbeanProductLine.searchProductLine("Classic Cars"));
-                listProductLine = sessionbeanProductLine.getAllProductLine();
                 
                 request.setAttribute("operation", "New");
                 request.setAttribute("product", product);
-                request.setAttribute("listProductLine", listProductLine);
                 request.getRequestDispatcher("ManageTools/mtProduct.jsp").include(request, response);
             }
             else if(productCode.equals("")) {
@@ -98,11 +122,9 @@ public class servletProductSearch extends HttpServlet {
             }
             else {
                 product = sessionbeanProduct.searchProduct(productCode);
-                listProductLine = sessionbeanProductLine.getAllProductLine();
                 
                 request.setAttribute("operation", "Update");
                 request.setAttribute("product", product);
-                request.setAttribute("listProductLine", listProductLine);
                 request.getRequestDispatcher("ManageTools/mtProduct.jsp").include(request, response);
             }
         }

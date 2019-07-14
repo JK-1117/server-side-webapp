@@ -36,8 +36,6 @@
 %>
 
 <h1>HOME</h1>
-<%=username%>
-<%=role%>
 <section class="row">
     <div class="col-sm-12">
         <h4>Product Line</h4>

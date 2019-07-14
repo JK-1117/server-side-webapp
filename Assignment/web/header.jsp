@@ -60,7 +60,7 @@
                     out.println("</ul></li>");
                 }
             %>
-            <li><a href="Order"><span class="glyphicon glyphicon-shopping-cart"></span> Cart</a></li>
+            <li><a href="Cart"><span class="glyphicon glyphicon-shopping-cart"></span> Cart</a></li>
         </ul>
     </div>
 </nav>

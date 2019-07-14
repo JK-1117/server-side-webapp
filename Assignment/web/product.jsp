@@ -1,66 +1,89 @@
 <%-- 
-    Document   : product
-    Created on : Jul 4, 2019, 1:06:36 PM
+    Document   : mtProduct
+    Created on : Jul 5, 2019, 9:11:13 PM
     Author     : JK
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<%@page language="java" import="entity.Product" %>
-<%@page language="java" import="java.util.*" %>
-<%
-    String productLine = "";
-    List<Product> listProducts = null;
+<%@ taglib prefix = "c" uri = "http://java.sun.com/jsp/jstl/core" %>
+
+<form id="frm_cart" name="frm_cart" action="servletCart" method="POST">
+    <input type="hidden" id="operation" name="operation" value="AddToCart" />
+    <input type="hidden" id="productCode" name="productCode" value="${requestScope.product.productCode}" />
+    <input type="hidden" id="productName" name="productName" value="${requestScope.product.productName}" />
+    <input type="hidden" id="qty" name="qty" value="1" />
+</form>
+
+<div class="row">
+    <a href="Product?productLine=${requestScope.product.productLine.productLine}">${requestScope.product.productLine.productLine.toUpperCase()}</a> > ${requestScope.product.productName.toUpperCase()}
+</div>
+<h2>${requestScope.product.productName}</h2>
+
+<section>
+    <div class="form-group row">
+        <label class="col-xs-3 text-right">Product Scale: </label>
+        <div class="col-xs-9">${requestScope.product.productScale}</div>
+    </div>
+
+    <div class="form-group row">
+        <label class="col-xs-3 text-right">Product Vendor: </label>
+        <div class="col-xs-9">${requestScope.product.productVendor}</div>
+    </div>
+
+    <div class="form-group row">        
+        <label class="col-xs-3 text-right">Price:  </label>
+        <div class="col-xs-9">
+            RM${requestScope.product.msrp}
+        </div>
+    </div>
+
+    <div class="form-group row">
+        <label class="col-xs-3 text-right">Quantity: </label>
+
+        <c:choose>
+            <c:when test="${requestScope.product.quantityInStock < 1}">
+                <div class="col-xs-2">
+                    <strong class="text-danger">Out of Stock</strong>
+                </div>
+            </c:when>
+            
+            <c:otherwise>
+                <div class="col-xs-2">
+                    <input class="form-control" type="number" id="orderQty" name="orderQty" value="1" min="1" max="${requestScope.product.quantityInStock}" />
+                </div>
+                <small class="col-xs-7">
+                    ${requestScope.product.quantityInStock} pieces available
+                </small>
+            </c:otherwise>
+        </c:choose>
+    </div>
+
+    <div class="form-group row">        
+        <div class="col-xs-offset-3 col-xs-9">
+            <button onclick="order('AddToCart')" class="btn btn-lg btn-primary ${requestScope.product.quantityInStock < 1? 'disabled':''}">
+                <span class="glyphicon glyphicon-shopping-cart"></span> Add To Cart
+            </button>
+            <button onclick="order('BuyNow')" class="btn btn-lg btn-danger ${requestScope.product.quantityInStock < 1? 'disabled':''}">
+                <span class="glyphicon glyphicon-usd"></span> Buy Now
+            </button>
+        </div>
+    </div>
+
+    <div class="row form-group">
+        <label class="col-xs-3 text-right">Description: </label>
+        <div class="col-xs-9">${requestScope.product.productDescription}</div>
+    </div>
+</section>
+        
+<script>
+    $(function() {
+        $("#orderQty").change(event => {
+            $("#qty").val($("#orderQty").val());
+        });
+    });
     
-    if(request.getAttribute("productLine") != null) {
-        productLine = (String)request.getAttribute("productLine");
+    function order(operation) {
+        $("#operation").val(operation);
+        $("#frm_cart").submit();
     }
-    if(request.getAttribute("listProducts") != null) {
-        listProducts = (List<Product>)request.getAttribute("listProducts");
-    }
-%>
-<h3><%=productLine.toUpperCase()%> > PRODUCT</h3>
-<small>Showing 10 results</small>
-<div class="tab-content">
-    <div id="page1" class="tab-pane list-group fade in active" >
-        <%
-            int index = 0;
-            int productPage = 1;
-        //TODO: sorting & select productline & probably search
-            Iterator i = listProducts.iterator();
-            while (i.hasNext()) {
-                Product pro = (Product) i.next();
-                out.println("<a href=\"#\" class=\"list-group-item\" >");
-                out.println("<h4 class=\"list-group-item-heading\" >");
-                out.println(pro.getProductName());
-                out.println("<span class=\"label label-info\">RM" + pro.getMsrp() + "</span>");
-                out.println("</h4><p class=\"list-group-item-text\" >");
-                out.println(pro.getProductDescription());
-                out.println("</p></a>");
-                index++;
-                if (index == productPage * 10) {
-                    out.println("</div>");
-                    if (i.hasNext()) {
-                        productPage++;
-                        out.println("<div id=\"page" + productPage + "\" class=\"tab-pane list-group fade\" >");
-                    }
-                }
-            }
-            if (index % 10 > 0) {
-                out.println("</div>");
-            }
-            out.println("</div>");
-            out.println("<ul class=\"pagination pull-right\">");
-            out.println("<li class=\"active\"><a onclick=\"changePage(this)\" href=\"#\" >1</a></li>");
-            for (int j = 2; j <= productPage; j++) {
-                out.println("<li><a onclick=\"changePage(this)\" href=\"#\" >" + j + "</a></li>");
-            }
-            out.println("</ul>");
-        %>
-<script type="text/javascript">
-function changePage(btn) {
-    $(".pagination > li").removeClass("active");
-    $(btn).parent().addClass("active");
-    $("[id^=page]").removeClass("in active");
-    $("#page" + $(btn).text()).addClass("in active");
-}
 </script>

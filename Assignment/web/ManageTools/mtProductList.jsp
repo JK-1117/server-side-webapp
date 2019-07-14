@@ -42,9 +42,7 @@
             <th class="text-center">Product Code</th>
             <th class="text-center">Product Name</th>
             <th class="text-center">Product Line</th>
-            <th class="text-center">Scale</th>
             <th class="text-center">Vendor</th>
-            <th class="text-center">Description</th>
             <th class="text-center">Qty</th>
             <th class="text-center">Buy Price</th>
             <th class="text-center">MSRP</th>
@@ -64,9 +62,7 @@
                 out.println("<td class=\"text-center\">" + product.getProductCode()+ "</td>");
                 out.println("<td>" + product.getProductName() + "</td>");
                 out.println("<td>" + product.getProductLine().getProductLine() + "</td>");
-                out.println("<td class=\"text-center\">" + product.getProductScale() + "</td>");
                 out.println("<td>" + product.getProductVendor() + "</td>");
-                out.println("<td class=\"descriptionTD\">" + product.getProductDescription() + "</td>");
                 out.println("<td>" + product.getQuantityInStock()+ "</td>");
                 out.println("<td>RM" + product.getBuyPrice()+ "</td>");
                 out.println("<td>RM" + product.getMsrp()+ "</td>");

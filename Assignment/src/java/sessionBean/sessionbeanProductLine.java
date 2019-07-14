@@ -11,6 +11,7 @@ import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import entity.ProductLine;
+import java.util.ArrayList;
 import javax.persistence.Query;
 
 /**
@@ -40,9 +41,9 @@ public class sessionbeanProductLine {
         return (ProductLine) q.getSingleResult();
     }
     
-    public List<Product> getProductList(String productLine) {
+    public ArrayList<Product> getProductList(String productLine) {
         ProductLine proLine = searchProductLine(productLine);
         
-        return proLine.getProductList();
+        return new ArrayList<Product>(proLine.getProductList());
     }
 }

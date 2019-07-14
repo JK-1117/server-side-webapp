@@ -26,7 +26,7 @@
     <div class="container-fluid">
         <ul class="nav navbar-nav navbar-right">
             <% if (username.equals("")) {%>
-            <li><a data-toggle="modal" data-target="#loginModal">Login</a></li>
+            <li><a class="pointer" data-toggle="modal" data-target="#loginModal">Login</a></li>
             <li><a href="/signup.jsp">Sign Up</a></li>
                 <% } else { %>
             <li><a href="servletLogout">Logout</a></li>

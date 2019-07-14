@@ -6,6 +6,7 @@
 package sessionBean;
 
 import entity.User;
+import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
@@ -21,24 +22,47 @@ public class sessionbeanUser {
 
     @PersistenceContext(unitName = "AssignmentPU")
     private EntityManager em;
-
-    public void persist(Object object) {
-        em.persist(object);
+    
+    public List<User> getAllUser() {
+        Query q = em.createNamedQuery("User.findAll");
+        
+        return q.getResultList();
     }
-
-    public User login(String username, String password) {
+    
+    public User searchUser(String username) {
         try {
             Query q = em.createNamedQuery("User.findByUsername");
             q.setParameter("username", username);
 
-            User user = (User) q.getSingleResult();
-            if (user.getPassword().equals(password)) {
-                return user;
-            }
-            return null;
+            return (User)q.getSingleResult();
         } catch (NoResultException e) {
             return null;
         }
+    }
 
+    public User login(String username, String password) {
+        User user = searchUser(username);
+        if (user.getPassword().equals(password)) {
+            return user;
+        }
+        return null;
+    }
+    
+    public void insertUser(String username, String password) {
+        User t = new User(username, password);
+        
+        em.persist(t);
+    }
+    
+    public void updateUser(String username, String password) {
+        User t = new User(username, password);
+        
+        em.merge(t);
+    }
+    
+    public void deleteUser(String username) {
+        User t = searchUser(username);
+        
+        em.remove(t);
     }
 }
