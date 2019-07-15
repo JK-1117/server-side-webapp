@@ -75,7 +75,7 @@
     <div class="form-group">
         <label for="textProductCode" class="control-label col-sm-2">Product Code: </label>
         <div class="col-sm-4">
-            <input value="<%=product.getProductCode()%>" type="text" class="form-control" id="textProductCode" required="required"
+            <input value="<%=product.getProductCode()%>" type="text" class="form-control" id="textProductCode" required="required" maxlength="15"
                    <%
                        if(!operation.equals("New")) {
                            out.println("readonly");
@@ -112,7 +112,7 @@
     <div class="form-group">
         <label for="textProductName" class="control-label col-sm-2">Product Name: </label>
         <div class="col-sm-4">
-            <input value="<%=product.getProductName()%>" type="text" class="form-control" id="textProductName" <%=readonly%> required="required" />
+            <input value="<%=product.getProductName()%>" type="text" class="form-control" id="textProductName" <%=readonly%> required="required" maxlength="70" />
         </div>
 
     </div>
@@ -120,7 +120,7 @@
     <div class="form-group">
         <label for="textProductScale" class="control-label col-sm-2">Product Scale: </label>
         <div class="col-sm-4">
-            <input value="<%=product.getProductScale()%>" type="text" class="form-control" id="textProductScale" <%=readonly%> required="required" />
+            <input value="<%=product.getProductScale()%>" type="text" class="form-control" id="textProductScale" <%=readonly%> required="required" maxlength="10" />
         </div>
 
     </div>
@@ -128,7 +128,7 @@
     <div class="form-group">
         <label for="textProductVendor" class="control-label col-sm-2">Product Vendor: </label>
         <div class="col-sm-4">
-            <input value="<%=product.getProductVendor()%>" type="text" class="form-control" id="textProductVendor" <%=readonly%> required="required" />
+            <input value="<%=product.getProductVendor()%>" type="text" class="form-control" id="textProductVendor" <%=readonly%> required="required" maxlength="50" />
         </div>
 
     </div>
@@ -165,6 +165,7 @@
 <div id="dialog-confirm-delete" title="Delete Comfirmation" style="display:none;">
     <p><span class="ui-icon ui-icon-alert"></span>This item will be permanently deleted and cannot be recovered. Are you sure?</p>
 </div>
+<script src="js/jquery.validate.min.js"></script>
 <script>
     $(function() {
         $("#textProductCode").change(event => {

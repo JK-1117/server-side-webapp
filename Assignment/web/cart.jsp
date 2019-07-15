@@ -48,6 +48,19 @@
     </table>
 </section>
             
+<section>
+    <div class="form-group">
+        <c:choose>
+            <c:when test="${empty sessionScope.username}">
+                <button type="button" class="btn btn-lg btn-danger pull-right" id="btnCheckout" data-toggle="modal" data-target="#loginModal">Checkout</button>
+            </c:when>
+            <c:otherwise>
+                <button type="button" class="btn btn-lg btn-danger pull-right" id="btnCheckout">Checkout</button>
+            </c:otherwise>
+        </c:choose>
+    </div>
+</section>
+            
 <script>
     function removeItem(productCode, id) {
         $("#qty" + id).val(0);

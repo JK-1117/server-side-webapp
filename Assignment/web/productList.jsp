@@ -3,17 +3,20 @@
     Created on : Jul 4, 2019, 1:06:36 PM
     Author     : JK
 --%>
-
-<%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@page language="java" import="entity.Product" %>
 <%@page language="java" import="entity.ProductLine" %>
 <%@page language="java" import="java.util.*" %>
 <%
+    String txtSearch = "";
     String productLine = "";
     String sortBy = "";
     List<Product> listProducts = null;
     List<ProductLine> listProductLine = null;
     
+    if(request.getAttribute("txtSearch") != null) {
+        txtSearch = (String)request.getAttribute("txtSearch");
+    }
     if(request.getAttribute("productLine") != null) {
         productLine = (String)request.getAttribute("productLine");
     }
@@ -28,6 +31,18 @@
     }
 %>
 <h3><%=productLine.toUpperCase()%> > PRODUCT</h3>
+
+<form action="Product" method="GET">
+    <div class="input-group">
+        <input id="txtSearch" name="txtSearch" type="text" class="form-control" placeholder="Search" value="<%=txtSearch%>">
+        <div class="input-group-btn">
+          <button class="btn btn-primary" type="submit">
+            <span class="glyphicon glyphicon-search"></span> Search
+          </button>
+        </div>
+    </div>
+</form>
+
 <section class="row">
     <div class="col-sm-12">
         <h4>Product Line</h4>
@@ -69,7 +84,7 @@
         <%
             int index = 0;
             int productPage = 1;
-        //TODO: sorting & select productline & probably search
+        //TODO: search
             Iterator i = listProducts.iterator();
             while (i.hasNext()) {
                 Product pro = (Product) i.next();
@@ -101,8 +116,7 @@
             out.println("</ul>");
         %>
 <script type="text/javascript">
-    $(function() {
-                
+    $(function() {      
         $("#sortBy").change(event => {
             var str = "Product?sortBy=" + $("#sortBy").val();
             <%

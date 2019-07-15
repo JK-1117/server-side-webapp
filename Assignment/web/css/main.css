@@ -41,6 +41,7 @@
     background-color: #fff;
 }
 .table > thead > tr > th {
+    text-align: center;
     vertical-align: middle;
 }
 .error {
@@ -48,7 +49,4 @@
 }
 section {
     padding: 15px;
-}
-table>thead>tr>th {
-    text-align: center;
 }

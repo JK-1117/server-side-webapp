@@ -9,6 +9,7 @@ import entity.Product;
 import entity.ProductLine;
 import java.io.IOException;
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import javax.ejb.EJB;
@@ -59,6 +60,7 @@ public class servletProductSearch extends HttpServlet {
 
         String productLine = "";
         String productCode = "";
+        String txtSearch = "";
         String sortBy = "";
         String operation = "";
         List<Product> listProducts = null;
@@ -80,6 +82,16 @@ public class servletProductSearch extends HttpServlet {
         } else {
             listProducts = sessionbeanProduct.getAllProducts();
         }  
+        if (request.getParameter("txtSearch") != null) {
+            txtSearch = (String) request.getParameter("txtSearch");
+            List<Product> filteredList = new ArrayList<Product>();
+            for(Product item : listProducts) {
+                if(item.getProductName().toLowerCase().contains(txtSearch.toLowerCase())) {
+                    filteredList.add(item);
+                }
+            }
+            listProducts = filteredList;
+        }
 
         if(sortBy.equals("PriceLH")) {
             listProducts.sort(Comparator.comparing(Product::getMsrp));
@@ -92,6 +104,7 @@ public class servletProductSearch extends HttpServlet {
         }
         
         listProductLine = sessionbeanProductLine.getAllProductLine();
+        request.setAttribute("txtSearch", txtSearch);
         request.setAttribute("sortBy", sortBy);
         request.setAttribute("productLine", productLine);
         request.setAttribute("listProducts", listProducts);
