@@ -63,7 +63,7 @@
             while (j.hasNext()) {
                 Product pro = (Product) j.next();
                 Long quantitySold = sessionbeanOrderDetail.getQuantitySold(pro);
-                out.println("<a href=\"#\" class=\"list-group-item list-group-item-danger\" >");
+                out.println("<a href=\"Product?productCode=" + pro.getProductCode() + "\" class=\"list-group-item list-group-item-danger\" >");
                 out.println("<h4 class=\"list-group-item-heading\" >");
                 out.println(pro.getProductName());
                 out.println("<span class=\"label label-danger\">" + quantitySold + " Sold</span>");
