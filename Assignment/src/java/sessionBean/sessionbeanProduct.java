@@ -44,6 +44,10 @@ public class sessionbeanProduct {
         return (Product)q.getSingleResult();
     }
     
+    public void updateProduct(Product product) {
+        em.merge(product);
+    }
+    
     public void updateProduct(String productCode, String productLine, String productName, String productScale, String productVendor, String productDescription, String quantityInStock, String buyPrice, String MSRP) {
         Product t = new Product(productCode, productName, productScale, productVendor, productDescription, Short.parseShort(quantityInStock), new BigDecimal(buyPrice), new BigDecimal(MSRP));
         t.setProductLine(sessionbeanProductLine.searchProductLine(productLine));

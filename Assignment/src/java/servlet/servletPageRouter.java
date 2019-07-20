@@ -5,8 +5,10 @@
  */
 package servlet;
 
+import entity.Customer;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.List;
 import javax.ejb.EJB;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -14,6 +16,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import sessionBean.sessionbeanCustomer;
 import sessionBean.sessionbeanProduct;
 import sessionBean.sessionbeanProductLine;
 
@@ -23,6 +26,9 @@ import sessionBean.sessionbeanProductLine;
  */
 @WebServlet(name = "FrameServlet", urlPatterns = {"/Home", "/Product", "/Contact", "/Cart", "/Order", "/Payment", "/Customer", "/Office", "/Employee", "/ProductLine", "/User", "/error"})
 public class servletPageRouter extends HttpServlet {
+
+    @EJB
+    private sessionbeanCustomer sessionbeanCustomer;
 
     @EJB
     private sessionbeanProductLine sessionbeanProductLine;
@@ -50,6 +56,7 @@ public class servletPageRouter extends HttpServlet {
         String page = "home";
         String username = "";
         String role = "";
+        List<Customer> listCustomer = null;
 
         HttpSession session = request.getSession();
         if(session.getAttribute("username") != null) {
@@ -69,9 +76,19 @@ public class servletPageRouter extends HttpServlet {
             page = "/contact.jsp";
         }
         else if(url.equals("/Cart")) {
+            listCustomer = sessionbeanCustomer.getAllCustomer();
+            
+            request.setAttribute("listCustomer", listCustomer);
             page = "/cart.jsp";
         }
         else if(url.equals("/Order")) {
+            String operation = "";
+            if(request.getParameter("operation") != null) {
+                operation = request.getParameter("operation");
+            }
+            if(operation.equals("New")) {
+                page = "/servletOrdersUpdate";
+            }
             page = "/servletOrdersSearch";
         }
         else if(url.equals("/Payment")) {

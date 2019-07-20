@@ -57,7 +57,13 @@
             </c:otherwise>
         </c:choose>
     </div>
-
+        
+    <c:if test='${param.itemAdded == "true"}'>
+        <div id="successAlert" class="alert alert-success">
+            <strong>Items Added Successfully!</strong>
+        </div>
+    </c:if>
+        
     <div class="form-group row">        
         <div class="col-xs-offset-3 col-xs-9">
             <button onclick="order('AddToCart')" class="btn btn-lg btn-primary ${requestScope.product.quantityInStock < 1? 'disabled':''}">
@@ -77,6 +83,10 @@
         
 <script>
     $(function() {
+        window.setTimeout(function() {
+            $("#successAlert").fadeOut('slow');
+        }, 600);
+        
         $("#orderQty").change(event => {
             $("#qty").val($("#orderQty").val());
         });

@@ -5,27 +5,51 @@
  */
 package servlet;
 
-import entity.Customer;
 import java.io.IOException;
-import java.util.List;
+import java.io.PrintWriter;
 import javax.ejb.EJB;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 import sessionBean.sessionbeanCustomer;
 
 /**
  *
- * @author JK
+ * @author User
  */
-@WebServlet(name = "servletCustomerSearch", urlPatterns = {"/servletCustomerSearch"})
-public class servletCustomerSearch extends HttpServlet {
+@WebServlet(name = "servletDeleteCustomer", urlPatterns = {"/servletDeleteCustomer"})
+public class servletDeleteCustomer extends HttpServlet {
 
     @EJB
     private sessionbeanCustomer sessionbeanCustomer;
+
+    /**
+     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
+     * methods.
+     *
+     * @param request servlet request
+     * @param response servlet response
+     * @throws ServletException if a servlet-specific error occurs
+     * @throws IOException if an I/O error occurs
+     */
+    protected void processRequest(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        response.setContentType("text/html;charset=UTF-8");
+        try (PrintWriter out = response.getWriter()) {
+            /* TODO output your page here. You may use following sample code. */
+            out.println("<!DOCTYPE html>");
+            out.println("<html>");
+            out.println("<head>");
+            out.println("<title>Servlet servletDeleteCustomer</title>");
+            out.println("</head>");
+            out.println("<body>");
+            out.println("<h1>Servlet servletDeleteCustomer at " + request.getContextPath() + "</h1>");
+            out.println("</body>");
+            out.println("</html>");
+        }
+    }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
@@ -39,16 +63,7 @@ public class servletCustomerSearch extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String username = "";
-        HttpSession session = request.getSession();
-        List<Customer> listCustomer = null;
-        listCustomer = sessionbeanCustomer.getAllCustomer();
-        if (session.getAttribute("username") != null) {
-            username = (String) session.getAttribute("username");
-        }
-        
-        request.setAttribute("listCustomer", listCustomer);
-        request.getRequestDispatcher("ManageTools/mtcustomer.jsp").include(request, response);
+        processRequest(request, response);
     }
 
     /**
@@ -62,6 +77,17 @@ public class servletCustomerSearch extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        String cusNumber = request.getParameter("custno");
+        if (cusNumber != null) {
+            try {
+                sessionbeanCustomer.deleteCustomer(Integer.parseInt(cusNumber));
+                response.getWriter().println("<script>window.location.href='Customer';</script>");
+            }catch(IllegalArgumentException nre){
+                
+            }
+        } else {
+            response.getWriter().println("<h1>Customer Not Found</h1>");
+        }
     }
 
     /**

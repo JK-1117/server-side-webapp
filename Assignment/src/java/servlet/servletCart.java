@@ -142,7 +142,7 @@ public class servletCart extends HttpServlet {
         }
         else if(operation.equals("AddToCart")) {
             cart.addItem(productCode, qty);
-            out.println("<script>window.location.href='Product?productCode=" + productCode + "'</script>");
+            out.println("<script>window.location.href='Product?productCode=" + productCode + "&itemAdded=true'</script>");
         }
         else if(operation.equals("BuyNow")) {
             cart.addItem(productCode, qty);

@@ -5,6 +5,8 @@
  */
 package sessionBean;
 
+import entity.Orderdetail;
+import entity.Orders;
 import entity.Product;
 import java.util.List;
 import javax.ejb.Stateless;
@@ -22,10 +24,6 @@ public class sessionbeanOrderDetail {
     @PersistenceContext(unitName = "AssignmentPU")
     private EntityManager em;
 
-    public void persist(Object object) {
-        em.persist(object);
-    }
-
     public List<Product> getTopSalesProduct() {
         Query q = em.createNamedQuery("Orderdetail.getTopSalesProduct");
         
@@ -37,5 +35,16 @@ public class sessionbeanOrderDetail {
         q.setParameter("product", product);
         
         return (Long)q.getSingleResult();
+    }
+    
+    public void insertOrderDetail(Integer orderNumber, int quantityOrdered, short orderLineNumber, Orders orders, Product product) {
+        Orderdetail t = new Orderdetail(orderNumber, product.getProductCode());
+        t.setOrders(orders);
+        t.setQuantityOrdered(quantityOrdered);
+        t.setProduct(product);
+        t.setOrderLineNumber(orderLineNumber);
+        t.setPriceEach(product.getMsrp());
+        
+        em.persist(t);
     }
 }

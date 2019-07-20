@@ -127,6 +127,10 @@ public class Customer implements Serializable {
         this.country = country;
     }
 
+    public Customer(int[] i, String name, String cfname, String clname, String phone, String addr1, String addr2, String city, String state, String postcode, String country) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
     public Integer getCustomerNumber() {
         return customerNumber;
     }

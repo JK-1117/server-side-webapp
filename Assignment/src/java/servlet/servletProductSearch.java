@@ -5,6 +5,7 @@
  */
 package servlet;
 
+import entity.Customer;
 import entity.Product;
 import entity.ProductLine;
 import java.io.IOException;
@@ -19,6 +20,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import sessionBean.sessionbeanCustomer;
 import sessionBean.sessionbeanProduct;
 import sessionBean.sessionbeanProductLine;
 
@@ -65,6 +67,7 @@ public class servletProductSearch extends HttpServlet {
         String operation = "";
         List<Product> listProducts = null;
         List<ProductLine> listProductLine = null;
+        List<Customer> listCustomer = null;
         Product product = null;
 
         if (request.getParameter("operation") != null) {

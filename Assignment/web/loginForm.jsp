@@ -27,7 +27,7 @@
         <ul class="nav navbar-nav navbar-right">
             <% if (username.equals("")) {%>
             <li><a class="pointer" data-toggle="modal" data-target="#loginModal">Login</a></li>
-            <li><a href="/signup.jsp">Sign Up</a></li>
+            <li><a class="pointer" data-toggle="modal" data-target="#signupModal">Sign Up</a></li>
                 <% } else { %>
             <li><a href="servletLogout">Logout</a></li>
                 <% }%>
@@ -63,8 +63,44 @@
                 </form>
             </div>
             <div class="modal-footer">
-                <a href="./signup.jsp">Don't have an account?</a>
+                <a data-toggle="modal" data-target="#signupModal" href="#signupModal" onclick="hidelgmodal()">Don't have an account?</a>
             </div>
+        </div>
+
+    </div>
+</div>
+
+<!-- Modal -->
+<div id="signupModal" class="modal fade in" role="dialog">
+    <div class="modal-dialog modal-login">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="avatar">
+                    <img src="assets/avatar.png" alt="Avatar">
+                </div>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Member Sign Up</h4>
+            </div>
+            <div class="modal-body">
+                <form id="frm_signup" action="servletSignUp" method="post" autocomplete="on">
+                    <div class="form-group">
+                        <input type="text" class="form-control" id="username" name="username" placeholder="Username" required="required" autofocus="autofocus">
+                    </div>
+                    <div class="form-group">
+                        <input type="password" class="form-control" id="password" name="password" placeholder="Password" required="required">	
+                    </div>
+
+                    <div class="form-group">
+                        <button type="submit" class="btn btn-primary btn-lg btn-block login-btn">Sign Up</button>
+                    </div>
+                </form>
+                <div class="modal-footer">
+                Already have account ? <a data-toggle="modal" data-target="#loginModal" href="#loginModal" onclick="hidesgmodal()">Login Now</a>
+            </div>
+            </div>
+
         </div>
 
     </div>
@@ -97,5 +133,11 @@
                 console.log('Error occured!!');
             }
         });
+    }
+    function hidelgmodal() {
+        $("#loginModal").modal('hide');
+    }
+    function hidesgmodal() {
+        $("#signupModal").modal('hide');
     }
 </script>

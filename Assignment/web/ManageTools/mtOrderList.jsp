@@ -4,7 +4,9 @@
     Author     : JK
 --%>
 
+<%@page import="utilities.Util"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@page language="java" import="utilities.Util" %>
 <%@page language="java" import="entity.Orders" %>
 <%@page language="java" import="java.util.*" %>
 <%@page language="java" import="java.text.SimpleDateFormat" %>
@@ -38,6 +40,7 @@
         while(i.hasNext()) {
             Orders orders = (Orders)i.next();
             SimpleDateFormat df = new SimpleDateFormat("dd/MM/yyyy");  
+            Util util = new Util();
 
             out.println("<tr height='40' valign='middle'>");
                 out.println("<td align='center'>" + index + ".</td>");
@@ -51,26 +54,7 @@
                     out.println("<td align='center'>" + df.format(orders.getShippedDate()) + "</td>");
                 }
 
-                out.print("<td align='center'><span class='label ");
-                if(orders.getStatus().equals("Shipped")) {
-                    out.print("label-success");
-                }
-                else if(orders.getStatus().equals("Resolved")) {
-                    out.println("label-info");
-                }
-                else if(orders.getStatus().equals("Cancelled")) {
-                    out.println("label-default");
-                }
-                else if(orders.getStatus().equals("On Hold")) {
-                    out.println("label-warning");
-                }
-                else if(orders.getStatus().equals("Disputed")) {
-                    out.println("label-danger");
-                }
-                else if(orders.getStatus().equals("In Process")) {
-                    out.println("label-primary");
-                }
-                out.println("'>" + orders.getStatus().toUpperCase() + "</span></td>");
+                out.println("<td align='center'><span class='label " + util.getStatusClass(orders.getStatus()) + "'>" + orders.getStatus().toUpperCase() + "</span></td>");
                 out.println("<td align='center'>" + orders.getCustomerNumber().getCustomerNumber() + "</td>");
                 out.println("<td align='center' onclick='window.location.href=\"Order?orderNumber=" + orders.getOrderNumber() + "\";' class='pointer'><span class=\"glyphicon glyphicon-folder-open\"></span></td>");
             out.println("</tr>");

@@ -22,6 +22,7 @@
 <script src="js/jquery-ui.min.js" ></script>
 
 <form id="frm_updateOrder" action="servletOrdersUpdate" method="POST">
+    <input type="hidden" name="operation" id="operation" value="Update" />
     <input type="hidden" name="orderNumber" id="orderNumber" value="<%=orders.getOrderNumber()%>" />
     <input type="hidden" name="shippedDate" id="shippedDate" value="<%=df.format(orders.getShippedDate())%>" />
     <input type="hidden" name="status" id="status" value="<%=orders.getStatus()%>" />

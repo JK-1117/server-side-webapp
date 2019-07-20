@@ -40,7 +40,8 @@ import javax.xml.bind.annotation.XmlTransient;
     , @NamedQuery(name = "Orders.findByOrderDate", query = "SELECT o FROM Orders o WHERE o.orderDate = :orderDate")
     , @NamedQuery(name = "Orders.findByRequiredDate", query = "SELECT o FROM Orders o WHERE o.requiredDate = :requiredDate")
     , @NamedQuery(name = "Orders.findByShippedDate", query = "SELECT o FROM Orders o WHERE o.shippedDate = :shippedDate")
-    , @NamedQuery(name = "Orders.findByStatus", query = "SELECT o FROM Orders o WHERE o.status = :status")})
+    , @NamedQuery(name = "Orders.findByStatus", query = "SELECT o FROM Orders o WHERE o.status = :status")
+    , @NamedQuery(name = "Orders.getOrderNumber", query = "SELECT max(o.orderNumber) FROM Orders o")})
 public class Orders implements Serializable {
 
     private static final long serialVersionUID = 1L;

@@ -7,7 +7,6 @@ package servlet;
 
 import entity.Customer;
 import java.io.IOException;
-import java.util.List;
 import javax.ejb.EJB;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -21,8 +20,8 @@ import sessionBean.sessionbeanCustomer;
  *
  * @author JK
  */
-@WebServlet(name = "servletCustomerSearch", urlPatterns = {"/servletCustomerSearch"})
-public class servletCustomerSearch extends HttpServlet {
+@WebServlet(name = "servletAjaxCustomer", urlPatterns = {"/servletAjaxCustomer"})
+public class servletAjaxCustomer extends HttpServlet {
 
     @EJB
     private sessionbeanCustomer sessionbeanCustomer;
@@ -39,16 +38,6 @@ public class servletCustomerSearch extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String username = "";
-        HttpSession session = request.getSession();
-        List<Customer> listCustomer = null;
-        listCustomer = sessionbeanCustomer.getAllCustomer();
-        if (session.getAttribute("username") != null) {
-            username = (String) session.getAttribute("username");
-        }
-        
-        request.setAttribute("listCustomer", listCustomer);
-        request.getRequestDispatcher("ManageTools/mtcustomer.jsp").include(request, response);
     }
 
     /**
@@ -62,6 +51,36 @@ public class servletCustomerSearch extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+
+        HttpSession session = request.getSession();
+        response.setContentType("text/plain");
+        response.setCharacterEncoding("UTF-8");
+
+        String input = "";
+        String cmbCompany = "";
+        String firstName = "";
+        String lastName = "";
+        boolean verified = false;
+        Customer customer = null;
+
+        input = request.getParameter("input");
+        cmbCompany = input.split(",")[0];
+        firstName = input.split(",")[1];
+        lastName = input.split(",")[2];
+        
+        customer = sessionbeanCustomer.searchCustomerByCustomerName(cmbCompany);
+        
+        if(customer != null) {
+            verified = true;
+            if(!firstName.toLowerCase().equals(customer.getContactFirstName().toLowerCase())) {
+                verified = false;
+            }
+            if(!lastName.toLowerCase().equals(customer.getContactLastName().toLowerCase())) {
+                verified = false;
+            }
+        }
+        
+        response.getWriter().write(String.valueOf(verified));
     }
 
     /**
