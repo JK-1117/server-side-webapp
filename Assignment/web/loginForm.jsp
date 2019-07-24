@@ -4,33 +4,20 @@
     Author     : JK
 --%>
 
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<%
-    String role = "";
-    String username = "";
-
-    if (session.getAttribute("role") != null) {
-        role = (String) session.getAttribute("role");
-    } else {
-        role = "";
-    }
-
-    if (session.getAttribute("username") != null) {
-        username = (String) session.getAttribute("username");
-    } else {
-        username = "";
-    }
-
-%>
 <nav class="navbar navbar-inverse">
     <div class="container-fluid">
         <ul class="nav navbar-nav navbar-right">
-            <% if (username.equals("")) {%>
-            <li><a class="pointer" data-toggle="modal" data-target="#loginModal">Login</a></li>
-            <li><a class="pointer" data-toggle="modal" data-target="#signupModal">Sign Up</a></li>
-                <% } else { %>
-            <li><a href="servletLogout">Logout</a></li>
-                <% }%>
+            <c:choose>
+                <c:when test="${empty sessionScope.username}">
+                    <li><a class="pointer" data-toggle="modal" data-target="#loginModal">Login</a></li>
+                    <li><a class="pointer" data-toggle="modal" data-target="#signupModal">Sign Up</a></li>
+                </c:when>
+                <c:otherwise>
+                    <li><a href="servletLogout">Logout</a></li>
+                </c:otherwise>
+            </c:choose>
         </ul>
     </div>
 </nav>

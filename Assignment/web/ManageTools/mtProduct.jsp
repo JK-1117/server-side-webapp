@@ -65,12 +65,10 @@
             <button onclick="updateProduct()" class="btn btn-success">Save <span class="glyphicon glyphicon-floppy-disk"></span></button>
             <% 
                 if(operation.equals("Update")) {
-                    out.println("<button onclick=\"deleteProduct()\" class=\"btn btn-danger\">Delete <span class=\"glyphicon glyphicon-remove\"></span></button>");
-                }
-                else if(operation.equals("New")) {
-                    out.println("<a href=\"Product\" class=\"btn btn-danger\">Cancel <span class=\"glyphicon glyphicon-remove\"></span></a>");
+                    out.println("<button onclick=\"deleteProduct()\" class=\"btn btn-danger\">Delete <span class=\"glyphicon glyphicon-trash\"></span></button>");
                 }
             %>
+            <a href="Product" class="btn btn-warning">Cancel <span class="glyphicon glyphicon-remove"></span></a>
         </div>
     </div>
 <% } %>

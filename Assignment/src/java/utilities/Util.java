@@ -12,7 +12,6 @@ package utilities;
 public class Util {
     
     public String getStatusClass(String status) {
-        System.out.println("status = " + status);
         if(status.equals("Shipped")) {
             return "label-success";
         }
@@ -34,5 +33,12 @@ public class Util {
         else {
             return "error";
         }
+    }
+    
+    public String getCmbSelectedOption(String option, String checkOption) {
+        if(option.equals(checkOption)) {
+            return "selected";
+        }
+        return "";
     }
 }

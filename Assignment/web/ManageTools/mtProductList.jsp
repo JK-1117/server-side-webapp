@@ -4,40 +4,23 @@
     Author     : JK
 --%>
 
+<%@ taglib prefix = "c" uri = "http://java.sun.com/jsp/jstl/core" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<%@page language="java" import="entity.Product" %>
-<%@page language="java" import="java.util.*" %>
-<%@page language="java" import="java.text.SimpleDateFormat" %>
-<%
-    String username = "";
-    String role = "";
-    
-    if(session.getAttribute("username") != null) {
-        username = (String)session.getAttribute("username");
-    }
-    if(session.getAttribute("role") != null) {
-        role = (String)session.getAttribute("role");
-    }
-    
-    List<Product> listProducts = null;
-    if(request.getAttribute("listProducts") != null) {
-        listProducts = (List<Product>)request.getAttribute("listProducts");
-    }
-    
-    if(username.equals("")) {
-        out.println("<script>window.location.href='./accessDenied.jsp';</script>");
-    }
-%>
+
+<c:if test="${empty username}">
+    <c:redirect url="accessDenied.jsp" />
+</c:if>
+
 <link rel="stylesheet" type="text/css" href="css/datatables.min.css"/>
 <h1>Product List</h1>
         
-<% if(role.equals("admin")) {%>
+<c:if test="${sessionScope.role == 'admin'}">
     <div class="row">
         <div class="col-xs-12" style="padding: 0px 0px 25px 15px;">
             <a href="Product?operation=New" class="btn btn-success">New <span class="glyphicon glyphicon-plus-sign"></span></a>
         </div>
     </div>
-<% } %>
+</c:if>
 
 <table id="table_product" class="table table-striped table-hover table-bordered table-sm">
     <thead>
@@ -54,28 +37,21 @@
         </tr>
     </thead>
     <tbody>
-    <%
-        int index = 1;
-        Iterator i = listProducts.iterator();
-
-        while(i.hasNext()) {
-            Product product = (Product)i.next();
-
-            out.println("<tr height='40' valign='middle'>");
-                out.println("<td>" + index + ".</td>");
-                out.println("<td class=\"text-center\">" + product.getProductCode()+ "</td>");
-                out.println("<td>" + product.getProductName() + "</td>");
-                out.println("<td>" + product.getProductLine().getProductLine() + "</td>");
-                out.println("<td>" + product.getProductVendor() + "</td>");
-                out.println("<td>" + product.getQuantityInStock()+ "</td>");
-                out.println("<td>RM" + product.getBuyPrice()+ "</td>");
-                out.println("<td>RM" + product.getMsrp()+ "</td>");
-                out.println("<td onclick='window.location.href=\"Product?productCode=" + product.getProductCode() + "\";' class='pointer text-center'><span class=\"glyphicon glyphicon-folder-open\"></span></td>");
-            out.println("</tr>");
-
-            index++;
-        }
-    %>
+        <c:if test="${not empty requestScope.listProducts}">
+            <c:forEach items="${requestScope.listProducts}" var="item" varStatus="loop">
+                <tr height='40' valign='middle'>
+                    <td align='center'>${loop.index + 1}</td>
+                    <td align='center'>${item.productCode}</td>
+                    <td>${item.productName}</td>
+                    <td>${item.productLine.productLine}</td>
+                    <td>${item.productVendor}</td>
+                    <td align='right'>${item.quantityInStock}</td>
+                    <td align='right'>RM${item.buyPrice}</td>
+                    <td align='right'>RM${item.msrp}</td>
+                    <td onclick="window.location.href='Product?productCode=${item.productCode}';" class='pointer text-center'><span class="glyphicon glyphicon-folder-open"></span></td>
+                </tr>
+            </c:forEach>
+        </c:if>
     </tbody>
 </table>
 <script type="text/javascript" src="js/datatables.min.js"></script>

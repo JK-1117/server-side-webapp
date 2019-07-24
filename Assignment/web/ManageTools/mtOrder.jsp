@@ -9,11 +9,13 @@
 <%@page language="java" import="entity.Orders" %>
 <%@page language="java" import="entity.Orderdetail" %>
 <%@page language="java" import="entity.Product" %>
+<%@page language="java" import="utilities.Util" %>
 <%@page language="java" import="java.util.*" %>
 <%@page language="java" import="java.text.SimpleDateFormat" %>
 <%
     String username = "";
     String role = "";
+    Util util = new Util();
     
     if(session.getAttribute("username") != null) {
         username = (String)session.getAttribute("username");
@@ -93,36 +95,12 @@
         <label for="optionStatus" class="control-label col-sm-2">Status: </label>
         <div class="col-sm-3">
             <select class="form-control" id="optionStatus">
-                <option value="Shipped"
-                    <%if(orders.getStatus().equals("Shipped")) {
-                        out.print("selected");
-                    }%>
-                    >Shipped</option>
-                <option value="Resolved"
-                    <%if(orders.getStatus().equals("Resolved")) {
-                        out.print("selected");
-                    }%>
-                    >Resolved</option>
-                <option value="Cancelled"
-                    <%if(orders.getStatus().equals("Cancelled")) {
-                        out.print("selected");
-                    }%>
-                    >Cancelled</option>
-                <option value="On Hold"
-                    <%if(orders.getStatus().equals("On Hold")) {
-                        out.print("selected");
-                    }%>
-                    >On Hold</option>
-                <option value="Disputed"
-                    <%if(orders.getStatus().equals("Disputed")) {
-                        out.print("selected");
-                    }%>
-                    >Disputed</option>
-                <option value="In Process"
-                    <%if(orders.getStatus().equals("In Process")) {
-                        out.print("selected");
-                    }%>
-                    >In Process</option>
+                <option value="Shipped" <%=util.getCmbSelectedOption("Shipped",orders.getStatus())%>>Shipped</option>
+                <option value="Resolved" <%=util.getCmbSelectedOption("Resolved",orders.getStatus())%>>Resolved</option>
+                <option value="Cancelled" <%=util.getCmbSelectedOption("Cancelled",orders.getStatus())%>>Cancelled</option>
+                <option value="On Hold" <%=util.getCmbSelectedOption("On Hold",orders.getStatus())%>>On Hold</option>
+                <option value="Disputed" <%=util.getCmbSelectedOption("Disputed",orders.getStatus())%>>Disputed</option>
+                <option value="In Process" <%=util.getCmbSelectedOption("In Process",orders.getStatus())%>>In Process</option>
             </select>
         </div>
     </div>
