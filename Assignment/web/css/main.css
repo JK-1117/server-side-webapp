@@ -47,6 +47,14 @@
 .error {
     color: red;
 }
+.banner {
+    background-image: url("../assets/banner.png");
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    color: #fff;
+    text-shadow: -2px 0 black, 0 2px black, 2px 0 black, 0 -2px black;
+}
 section {
     padding: 15px;
 }

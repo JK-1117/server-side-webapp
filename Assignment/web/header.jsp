@@ -27,11 +27,11 @@
 
 <jsp:include page="loginForm.jsp" flush="true" />
 
-<div class="jumbotron">
-    <div class="container text-center">
-        <h1>Online Store</h1>      
-        <p>Mission, Vision & Values</p>
-    </div>
+<div class="jumbotron banner text-center">
+    <!--<div class="container">-->
+        <h1>Kool Store</h1>      
+        <h3>Accelerating the future.</h3>
+    <!--</div>-->
 </div>
 
 <nav class="navbar navbar-inverse">
