@@ -84,8 +84,9 @@ public class sessionbeanCustomer {
         try {
             Query q = em.createNamedQuery("Customer.findByCustomerName");
             q.setParameter("customerName", customerName);
-        
-            return (Customer)q.getSingleResult();
+            Customer t = (Customer)q.getSingleResult();
+            em.refresh(t);
+            return t;
         }
         catch(NoResultException ex) {
             return null;
