@@ -55,6 +55,39 @@
     color: #fff;
     text-shadow: -2px 0 black, 0 2px black, 2px 0 black, 0 -2px black;
 }
+.card .panel {
+    border: 1px solid #428BCA; 
+    border-radius:0 !important;
+    transition: box-shadow 0.5s;
+}
+.card:hover .panel {
+    box-shadow: 5px 0px 40px rgba(0,0,0, .2);
+}
+.card .panel-footer .btn:hover {
+    border: 1px solid #428BCA;
+    background-color: #fff !important;
+    color: #f4511e;
+}
+.card .panel-heading {
+    color: #fff !important;
+    background-color: #428BCA !important;
+    padding: 25px;
+    border-bottom: 1px solid transparent;
+    border-top-left-radius: 0px;
+    border-top-right-radius: 0px;
+    border-bottom-left-radius: 0px;
+    border-bottom-right-radius: 0px;
+}
+.card .panel-footer {
+    background-color: white !important;
+}
+.card .panel-footer h3 {
+    font-size: 32px;
+}
+.card .panel-footer h4 {
+    color: #aaa;
+    font-size: 14px;
+}
 section {
     padding: 15px;
 }

@@ -6,6 +6,7 @@
 package servlet;
 
 import entity.Customer;
+import entity.Office;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.List;
@@ -17,6 +18,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import sessionBean.sessionbeanCustomer;
+import sessionBean.sessionbeanOffice;
 import sessionBean.sessionbeanProduct;
 import sessionBean.sessionbeanProductLine;
 
@@ -26,6 +28,9 @@ import sessionBean.sessionbeanProductLine;
  */
 @WebServlet(name = "FrameServlet", urlPatterns = {"/Home", "/Product", "/Contact", "/Cart", "/Order", "/Payment", "/Customer", "/Office", "/Employee", "/ProductLine", "/User", "/error"})
 public class servletPageRouter extends HttpServlet {
+
+    @EJB
+    private sessionbeanOffice sessionbeanOffice;
 
     @EJB
     private sessionbeanCustomer sessionbeanCustomer;
@@ -57,6 +62,7 @@ public class servletPageRouter extends HttpServlet {
         String username = "";
         String role = "";
         List<Customer> listCustomer = null;
+        List<Office> listOffice = null;
 
         HttpSession session = request.getSession();
         if(session.getAttribute("username") != null) {
@@ -73,6 +79,9 @@ public class servletPageRouter extends HttpServlet {
             page = "/servletProductSearch";
         }
         else if(url.equals("/Contact")) {
+            listOffice = sessionbeanOffice.getAllOffice();
+            
+            request.setAttribute("listOffice", listOffice);
             page = "/contact.jsp";
         }
         else if(url.equals("/Cart")) {
