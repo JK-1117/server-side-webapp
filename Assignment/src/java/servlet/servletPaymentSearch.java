@@ -27,6 +27,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import sessionBean.sessionbeanPayment;
+import sessionBean.sessionbeanUser;
 
 /**
  *
@@ -34,6 +35,9 @@ import sessionBean.sessionbeanPayment;
  */
 @WebServlet(name = "servletPaymentSearch", urlPatterns = {"/servletPaymentSearch"})
 public class servletPaymentSearch extends HttpServlet {
+
+    @EJB
+    private sessionbeanUser sessionbeanUser;
     @EJB
     private sessionbeanPayment sessionbeanPayment;
    

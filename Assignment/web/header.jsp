@@ -41,7 +41,6 @@
                                 <span class="glyphicon glyphicon-user"></span> My Account<span class="caret"></span>
                             </a>
                             <ul class="dropdown-menu">
-                                <li><a href="Profile">Profile</a></li>
                                 <li><a href="Order">Order History</a></li>
                                 <li><a href="Payment">Payment History</a></li>
                             </ul>

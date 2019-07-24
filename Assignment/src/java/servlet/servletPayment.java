@@ -5,6 +5,7 @@
  */
 package servlet;
 
+import entity.Customer;
 import entity.Payment;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -16,6 +17,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import sessionBean.sessionbeanCustomer;
 import sessionBean.sessionbeanPayment;
 
 /**
@@ -26,33 +28,10 @@ import sessionBean.sessionbeanPayment;
 public class servletPayment extends HttpServlet {
 
     @EJB
-    private sessionbeanPayment sessionbeanPayment;
+    private sessionbeanCustomer sessionbeanCustomer;
 
-    /**
-     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
-     * methods.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
-    protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");
-        try (PrintWriter out = response.getWriter()) {
-            /* TODO output your page here. You may use following sample code. */
-            out.println("<!DOCTYPE html>");
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<title>Servlet servletPayment</title>");            
-            out.println("</head>");
-            out.println("<body>");
-            out.println("<h1>Servlet servletPayment at " + request.getContextPath() + "</h1>");
-            out.println("</body>");
-            out.println("</html>");
-        }
-    }
+    @EJB
+    private sessionbeanPayment sessionbeanPayment;
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
@@ -66,15 +45,50 @@ public class servletPayment extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        HttpSession session = request.getSession();
-        List<Payment> listPayment = null;
-        listPayment = sessionbeanPayment.getAllPayment();
-//        if (session.getAttribute("username") != null) {
-//            username = (String) session.getAttribute("username");
-//        }
+        String username = "";
+        String role = "";
+        String page = "ManageTools/mtPayment.jsp";
         
+        HttpSession session = request.getSession();
+        if (session.getAttribute("username") != null) {
+            username = (String) session.getAttribute("username");
+        }
+        if (session.getAttribute("role") != null) {
+            role = (String) session.getAttribute("role");
+        }
+        
+        String customerName = "";
+        List<Payment> listPayment = null;
+        List<Customer> listCustomer = null;
+        if (request.getParameter("customerName") != null) {
+            customerName = (String)request.getParameter("customerName");
+        }
+        
+        if(role.equals("admin") || role.equals("staff")) {
+            page = "ManageTools/mtPayment.jsp";
+            listPayment = sessionbeanPayment.getAllPayment();
+        }
+        else if(role.equals("user")){
+            page = "./paymentList.jsp";
+            if(!customerName.equals("")) {
+                Customer customer = sessionbeanCustomer.searchCustomerByCustomerName(customerName);
+                listPayment = customer.getPaymentList();
+                System.out.println("listPayment = " + listPayment);
+            }
+        }
+        else {
+            response.setContentType("text/html;charset=UTF-8");
+            try(PrintWriter out = response.getWriter()) {
+                out.println("<h1>Please login to view payment history</h1>");
+                out.println("<script src=\"js/bootstrap.min.js\"></script>");
+            }
+        }
+        listCustomer = sessionbeanCustomer.getAllCustomer();
+        
+        request.setAttribute("customerName", customerName);
+        request.setAttribute("listCustomer", listCustomer);
         request.setAttribute("listPayment", listPayment);
-        request.getRequestDispatcher("ManageTools/mtPayment.jsp").include(request, response);
+        request.getRequestDispatcher(page).include(request, response);
     }
 
     /**
@@ -88,7 +102,6 @@ public class servletPayment extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
     }
 
     /**
