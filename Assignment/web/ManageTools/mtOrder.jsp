@@ -12,10 +12,24 @@
 <%@page language="java" import="java.util.*" %>
 <%@page language="java" import="java.text.SimpleDateFormat" %>
 <%
+    String username = "";
+    String role = "";
+    
+    if(session.getAttribute("username") != null) {
+        username = (String)session.getAttribute("username");
+    }
+    if(session.getAttribute("role") != null) {
+        role = (String)session.getAttribute("role");
+    }
+    
     SimpleDateFormat df = new SimpleDateFormat("dd/MM/yyyy");  
     Orders orders = null;
     if(request.getAttribute("orders") != null) {
         orders = (Orders)request.getAttribute("orders");
+    }
+    
+    if(username.equals("")) {
+        out.println("<script>window.location.href='./accessDenied.jsp';</script>");
     }
 %>
 <link rel="stylesheet" href="css/jquery-ui.min.css">

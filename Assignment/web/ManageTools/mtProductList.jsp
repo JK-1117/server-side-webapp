@@ -23,6 +23,10 @@
     if(request.getAttribute("listProducts") != null) {
         listProducts = (List<Product>)request.getAttribute("listProducts");
     }
+    
+    if(username.equals("")) {
+        out.println("<script>window.location.href='./accessDenied.jsp';</script>");
+    }
 %>
 <link rel="stylesheet" type="text/css" href="css/datatables.min.css"/>
 <h1>Product List</h1>

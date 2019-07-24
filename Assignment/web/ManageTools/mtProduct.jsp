@@ -36,6 +36,10 @@
     if(request.getAttribute("listProductLine") != null) {
         listProductLine = (List<ProductLine>)request.getAttribute("listProductLine");
     }
+    
+    if(username.equals("")) {
+        out.println("<script>window.location.href='./accessDenied.jsp';</script>");
+    }
 %>
 <link rel="stylesheet" href="css/jquery-ui.min.css">
 <script src="js/jquery-ui.min.js" ></script>

@@ -35,17 +35,21 @@
     if (request.getAttribute("listCustomer") != null) {
         listCustomer = (List<Customer>) request.getAttribute("listCustomer");
     }
+    
+    if(username.equals("")) {
+        out.println("<script>window.location.href='./accessDenied.jsp';</script>");
+    }
 %>
 <link rel="stylesheet" type="text/css" href="css/datatables.min.css"/>
 <link rel="stylesheet" href="css/jquery-ui.min.css">
 <script src="js/jquery-ui.min.js" ></script>
 
+<%if (role.equals("admin")||role.equals("staff")) { %>
 <div>
     <h1 style="display: inline-block">Customer</h1>
     <button type="submit" class="btn btn-primary btn-lg btn-block login-btn" data-toggle='modal' data-target='#deleteModal' style="float:right;width: 150px;height: 50px;margin-top: 10px">Delete</button>
     <button type="submit" class="btn btn-primary btn-lg btn-block login-btn" data-toggle='modal' data-target='#createModal' style="float:right;width: 150px;height: 50px;margin-top: 10px;margin-right: 5px">Create</button>
 </div>
-<%if (role.equals("admin")||role.equals("staff")) { %>
 <div class="row">
     <div class="col-md-12">
         <table id="table_user" class="table table-bordered table-hover table-striped">

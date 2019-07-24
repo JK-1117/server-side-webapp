@@ -11,9 +11,23 @@
 <%@page language="java" import="java.util.*" %>
 <%@page language="java" import="java.text.SimpleDateFormat" %>
 <%
+    String username = "";
+    String role = "";
+    
+    if(session.getAttribute("username") != null) {
+        username = (String)session.getAttribute("username");
+    }
+    if(session.getAttribute("role") != null) {
+        role = (String)session.getAttribute("role");
+    }
+    
     List<Orders> listOrders = null;
     if(request.getAttribute("listOrders") != null) {
         listOrders = (List<Orders>)request.getAttribute("listOrders");
+    }
+    
+    if(username.equals("")) {
+        out.println("<script>window.location.href='./accessDenied.jsp';</script>");
     }
 %>
 <link rel="stylesheet" type="text/css" href="css/datatables.min.css"/>

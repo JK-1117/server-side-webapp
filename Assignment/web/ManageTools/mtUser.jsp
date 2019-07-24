@@ -27,6 +27,10 @@
     if(request.getAttribute("listUser") != null) {
         listUser = (List<User>)request.getAttribute("listUser");
     }
+    
+    if(username.equals("")) {
+        out.println("<script>window.location.href='./accessDenied.jsp';</script>");
+    }
 %>
 <link rel="stylesheet" type="text/css" href="css/datatables.min.css"/>
 <link rel="stylesheet" href="css/jquery-ui.min.css">
