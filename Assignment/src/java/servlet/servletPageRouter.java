@@ -104,13 +104,13 @@ public class servletPageRouter extends HttpServlet {
             page = "/servletPaymentSearch";
         }
         else if(url.equals("/Customer")) {
-            page = "/servletCustomerSearch";
+            page = "/servletCustomer";
         }
         else if(url.equals("/Employee")) {
-            page = "/servletEmployeeSearch";
+            page = "/servletEmployee";
         }
         else if(url.equals("/Office")) {
-            page = "/servletOfficeUpdate";
+            page = "/servletOfficeSearch";
         }
         else if(url.equals("/ProductLine")) {
             page = "/servletProductLineUpdate";

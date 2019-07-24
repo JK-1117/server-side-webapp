@@ -1,9 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Context antiJARLocking="true" path="/Assignment">
-    <Resource
-        name="jdbc/classicmodels" auth="Container" type="javax.sql.DataSource"
-        jtaManaged = "true"
-        maxTotal="100" maxIdle="30" maxWaitMillis="10000"
-        username="root" password="mysql" driverClassName="com.mysql.jdbc.Driver"
-        url="jdbc:mysql://localhost:3306/classicmodels"/>
+  <Resource auth="Container" driverClassName="com.mysql.jdbc.Driver" jtaManaged="true" maxIdle="30" maxTotal="100" maxWaitMillis="10000" name="jdbc/classicmodels" password="mysql" type="javax.sql.DataSource" url="jdbc:mysql://localhost:3306/classicmodels" username="root"/>
 </Context>
