@@ -12,6 +12,7 @@
 <%
     String username = "";
     String role = "";
+    String errorUser = "";
     sessionbeanUserRole sessionbeanUserRole = null;
     List<User> listUser = null;
     
@@ -26,6 +27,9 @@
     }
     if(request.getAttribute("listUser") != null) {
         listUser = (List<User>)request.getAttribute("listUser");
+    }
+    if(request.getAttribute("errorUser") != null) {
+        errorUser = (String)request.getAttribute("errorUser");
     }
     
     if(username.equals("")) {
@@ -115,6 +119,11 @@
                     <option value="user">user</option>
                 </select>
             </div>
+            <%
+                if(!errorUser.equals("")) {
+                    out.println("<div id=\"errorUser\" class=\"alert alert-danger\"><strong>ERROR: </strong>" + errorUser + "</div>");
+                }
+            %>
             <div class="form-group">
                 <button type="button" onclick="validation()" class="btn btn-success">Save <span class="glyphicon glyphicon-floppy-disk"></span></button>
                 <button type="reset" onclick="newUser()" class="btn btn-danger">Cancel <span class="glyphicon glyphicon-remove"></span></button>
@@ -136,105 +145,4 @@
 </div>
             
 <script type="text/javascript" src="js/datatables.min.js"></script>
-<script>
-    $(document).ready(function () {
-        $('#table_user').DataTable();
-        
-        $(".error").hide();
-        
-        $("input").on("keyup", function() {
-            $(".error").hide();
-        });
-    });
-    function changePassword() {
-        var newPassword = $("#textPassword").val();
-        var newPassword2 = $("#textPassword2").val();
-        
-        if(newPassword != newPassword2) {
-            $("#password2Error").show();
-        }
-        else {
-            validation();
-        }
-    }
-    function editUser(username,password,userRole) {
-        $("#operation").val("Update");
-        $("#textUsername").attr("readonly", true);
-        $("#textUsername").val(username);
-        $("#textPassword").val(password);
-        $("#textUserRole").val(userRole);
-    }
-    function deleteUser(username,password,userRole) {
-        $("#operation").val("Delete");
-        $("#textUsername").attr("readonly", false);
-        $("#textUsername").val(username);
-        $("#textPassword").val(password);
-        $("#textUserRole").val(userRole);
-        validation();
-    }
-    function newUser() {
-        $(".error").hide();
-        $("#operation").val("New");
-        $("#textUsername").attr("readonly", false);
-        $("#textUsername").val("");
-        $("#textPassword").val("");
-        $("#textUserRole").val("");
-    }
-    function validation() {
-        var valid = true;
-        if($("#textUsername").val() != null) {
-            if($("#textUsername").val().trim().length < 1 || $("#textUsername").val().length > 15) {
-                $("#usernameError").show();
-                valid = false;
-            }
-        }
-        if($("#textPassword").val().trim().length < 1 || $("#textPassword").val().length > 15) {
-            $("#passwordError").show();
-            valid = false;
-        }
-        if(valid) {
-            $( "#dialog-confirm" ).dialog({
-                resizable: false,
-                height: "auto",
-                width: 400,
-                modal: true,
-                buttons: {
-                  "Yes": function() {
-                      verifyPassword();
-                  },
-                  Cancel: function() {
-                    $( this ).dialog( "close" );
-                  }
-                },
-                open: function(event) {
-                    $("#password").on('keydown',function(event) {
-                        if(event.keyCode == $.ui.keyCode.ENTER) {
-                            event.preventDefault();
-                            verifyPassword();
-                        }
-                    });
-                }
-            });
-        }
-    }
-    function verifyPassword() {
-        var username = $('#username').val();
-        var password = $('#password').val();
-        var input = username + "," + password;
-        $.ajax({
-            url: 'servletLogin',
-            method: 'POST',
-            data: {input: input},
-            success: function (result) {
-                if (result == "true") {
-                    $("#frm_updateUser").submit();
-                } else {
-                    $("#loginError").html("<div class=\"alert alert-danger\">Wrong password</div>");
-                }
-            },
-            error: function (jqXHR, exception) {
-                console.log('Error occured!!');
-            }
-        });
-    }
-</script>
+<script src="js/mtUser.js"></script>

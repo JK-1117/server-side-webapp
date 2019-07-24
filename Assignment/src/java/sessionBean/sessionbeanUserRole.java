@@ -64,9 +64,10 @@ public class sessionbeanUserRole {
     }
     
     public void updateUserRole(String username, String role) {
+        deleteUserRole(username, getUserRole(username));
         UserRole t = new UserRole(username, role);
         
-        em.merge(t);
+        em.persist(t);
     }
     
     public void deleteUserRole(String username, String role) {

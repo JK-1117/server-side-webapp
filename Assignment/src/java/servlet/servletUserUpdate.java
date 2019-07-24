@@ -5,6 +5,7 @@
  */
 package servlet;
 
+import com.mysql.jdbc.exceptions.MySQLIntegrityConstraintViolationException;
 import entity.User;
 import java.io.IOException;
 import java.util.List;
@@ -46,6 +47,7 @@ public class servletUserUpdate extends HttpServlet {
             throws ServletException, IOException {
         String username = "";
         String role = "";
+        String errorUser = "";
         List<User> listUser = null;
         HttpSession session = request.getSession();
         
@@ -55,10 +57,14 @@ public class servletUserUpdate extends HttpServlet {
         if(session.getAttribute("role") != null) {
             role = (String)session.getAttribute("role");
         }
+        if(request.getParameter("errorUser") != null) {
+            errorUser = (String)request.getParameter("errorUser");
+        }
         
         if(role.equals("admin") || role.equals("staff")) {
             listUser = sessionbeanUser.getAllUser();
 
+            request.setAttribute("errorUser",errorUser);
             request.setAttribute("listUser",listUser);
             request.setAttribute("sessionbeanUserRole",sessionbeanUserRole);
             request.getRequestDispatcher("ManageTools/mtUser.jsp").include(request, response);
@@ -91,6 +97,7 @@ public class servletUserUpdate extends HttpServlet {
         String textUsername = "";
         String textPassword = "";
         String textUserRole = "";
+        String errorUser = "";
         
         if(request.getParameter("operation") != null) {
             operation = (String)request.getParameter("operation");
@@ -106,8 +113,14 @@ public class servletUserUpdate extends HttpServlet {
         }
         
         if(operation.equals("New")) {
-            sessionbeanUser.insertUser(textUsername, textPassword);
-            sessionbeanUserRole.insertUserRole(textUsername, textUserRole);
+            User user = sessionbeanUser.searchUser(textUsername);
+            if(user == null){
+                sessionbeanUser.insertUser(textUsername, textPassword);
+                sessionbeanUserRole.insertUserRole(textUsername, textUserRole);
+            }
+            else{
+                errorUser = "user exists";
+            }
         }
         else if(operation.equals("Update")) {
             sessionbeanUser.updateUser(textUsername, textPassword);
@@ -120,7 +133,7 @@ public class servletUserUpdate extends HttpServlet {
         else if(operation.equals("ChangePassword")) {
             sessionbeanUser.updateUser(username, textPassword);
         }
-        response.getWriter().println("<script>window.location.href='User';</script>");
+        response.getWriter().println("<script>window.location.href='User?errorUser=" + errorUser + "';</script>");
     }
 
     /**

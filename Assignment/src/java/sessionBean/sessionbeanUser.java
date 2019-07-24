@@ -5,6 +5,7 @@
  */
 package sessionBean;
 
+import com.mysql.jdbc.exceptions.MySQLIntegrityConstraintViolationException;
 import entity.User;
 import java.util.List;
 import javax.ejb.Stateless;
@@ -48,7 +49,7 @@ public class sessionbeanUser {
         return null;
     }
     
-    public void insertUser(String username, String password) {
+    public void insertUser(String username, String password){
         User t = new User(username, password);
         
         em.persist(t);
