@@ -70,12 +70,19 @@ public class servletAjaxCustomer extends HttpServlet {
         
         customer = sessionbeanCustomer.searchCustomerByCustomerName(cmbCompany);
         
+        System.out.println("cmbCompany = " + cmbCompany);
+        System.out.println("firstName = " + firstName);
+        System.out.println("lastName = " + lastName);
+        System.out.println("customer = " + customer);
+        System.out.println("customer.getContactFirstName().trim() = " + customer.getContactFirstName().trim());
+        System.out.println("customer.getContactLastName().trim() = " + customer.getContactLastName().trim());
+        
         if(customer != null) {
             verified = true;
-            if(!firstName.toLowerCase().equals(customer.getContactFirstName().toLowerCase())) {
+            if(!firstName.trim().toLowerCase().equals(customer.getContactFirstName().trim().toLowerCase())) {
                 verified = false;
             }
-            if(!lastName.toLowerCase().equals(customer.getContactLastName().toLowerCase())) {
+            if(!lastName.trim().toLowerCase().equals(customer.getContactLastName().trim().toLowerCase())) {
                 verified = false;
             }
         }
