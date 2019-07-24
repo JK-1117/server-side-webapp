@@ -49,6 +49,11 @@ public class sessionbeanCustomer {
         c.setCreditLimit(crdlimit);
         em.persist(c);
     }
+    
+    public void updateCustomer(Customer t) {
+        em.refresh(em.merge(t));
+        em.flush();
+    }
 
     public void updateCustomer(int no, String name, String cfname, String clname, String phone, String addr1, String addr2, String city, String state, String postcode, String country, int salesno, BigDecimal crdlimit) {
         Customer c = em.find(Customer.class, no);

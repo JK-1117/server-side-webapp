@@ -9,8 +9,15 @@ import entity.Customer;
 import entity.Payment;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.math.BigDecimal;
+import java.util.Date;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.annotation.Resource;
 import javax.ejb.EJB;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -29,6 +36,10 @@ public class servletPayment extends HttpServlet {
 
     @EJB
     private sessionbeanCustomer sessionbeanCustomer;
+    @PersistenceContext(unitName = "AssignmentPU")
+    private EntityManager em;
+    @Resource
+    private javax.transaction.UserTransaction utx;
 
     @EJB
     private sessionbeanPayment sessionbeanPayment;
@@ -60,6 +71,7 @@ public class servletPayment extends HttpServlet {
         String customerName = "";
         List<Payment> listPayment = null;
         List<Customer> listCustomer = null;
+        Customer customer = null;
         if (request.getParameter("customerName") != null) {
             customerName = (String)request.getParameter("customerName");
         }
@@ -71,9 +83,13 @@ public class servletPayment extends HttpServlet {
         else if(role.equals("user")){
             page = "./paymentList.jsp";
             if(!customerName.equals("")) {
-                Customer customer = sessionbeanCustomer.searchCustomerByCustomerName(customerName);
+                
+                customer = sessionbeanCustomer.searchCustomerByCustomerName(customerName);
                 listPayment = customer.getPaymentList();
-                System.out.println("listPayment = " + listPayment);
+                
+                for(Payment pay : listPayment) {
+                    System.out.println(pay.getPaymentPK().getCheckNumber());
+                }
             }
         }
         else {
@@ -102,6 +118,44 @@ public class servletPayment extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        String username = "";
+        String role = "";
+        
+        HttpSession session = request.getSession();
+        if (session.getAttribute("username") != null) {
+            username = (String) session.getAttribute("username");
+        }
+        if (session.getAttribute("role") != null) {
+            role = (String) session.getAttribute("role");
+        }
+        
+        String customerName = "";
+        String checkNumber = "";
+        String amount = "";
+        BigDecimal bdAmount = BigDecimal.ZERO;
+        if (request.getParameter("customerName") != null) {
+            customerName = (String)request.getParameter("customerName");
+        }
+        if (request.getParameter("checkNumber") != null) {
+            checkNumber = (String)request.getParameter("checkNumber");
+        }
+        if (request.getParameter("amount") != null) {
+            amount = (String)request.getParameter("amount");
+            bdAmount = new BigDecimal(amount);
+        }
+        
+        if(!(customerName.equals("") || checkNumber.equals("") || amount.equals(""))) {
+            Customer customer = sessionbeanCustomer.searchCustomerByCustomerName(customerName);
+            Date today = new Date();
+            
+            customer.setCreditLimit(customer.getCreditLimit().add(bdAmount));
+            
+            sessionbeanPayment.insertPayment(customer.getCustomerNumber(), checkNumber, today, bdAmount);
+            sessionbeanCustomer.updateCustomer(customer);
+        }
+        
+        PrintWriter out = response.getWriter();
+        out.println("<script>window.location.href='Payment?customerName=" + customerName + "';</script>");
     }
 
     /**
@@ -113,5 +167,16 @@ public class servletPayment extends HttpServlet {
     public String getServletInfo() {
         return "Short description";
     }// </editor-fold>
+
+    public void persist(Object object) {
+        try {
+            utx.begin();
+            em.persist(object);
+            utx.commit();
+        } catch (Exception e) {
+            Logger.getLogger(getClass().getName()).log(Level.SEVERE, "exception caught", e);
+            throw new RuntimeException(e);
+        }
+    }
 
 }

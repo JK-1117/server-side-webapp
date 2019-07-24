@@ -42,6 +42,17 @@
 <div id="errorVerify" class="alert alert-danger">
     <strong>Contact Name Not Correct!</strong>!
 </div>
+        
+<section>
+    <form id="frm_paymentInsert" action="servletPayment" method="POST" class="form-inline">
+        <div class="form-group">
+            <input type="hidden" value="${requestScope.customerName}" id="customerName" name="customerName">
+            <input type="text" id="checkNumber" name="checkNumber" class="form-control" placeholder="Check Number" />
+            <input type="text" id="amount" name="amount" class="form-control" placeholder="Amount" />
+            <button id="btnMakePayment" type="button" class="btn btn-success">Make Payment</button>
+        </div>
+    </form>
+</section>
             
 <table id="table_orders" class="table table-striped table-hover table-bordered table-sm">
     <thead>
@@ -80,7 +91,35 @@
         $("#verificationSection").hide()
         $("#errorCompany").hide();
         $("#errorVerify").hide();
+        
+        $("#amount").on("change", event => {
+            validateAmountFormat();
+        })
+        $("#btnMakePayment").click(event => {
+            event.preventDefault();
+            validateAmountFormat();
+            
+            if($("#customerName").val() == "") {
+                alert("Please select your company and verify you identity.");
+            }
+            else if($("#amount").val() == "0.00") {
+                alert("Paymetn amount cannot be ZERO.");
+            }
+            else {
+                $("#frm_paymentInsert").submit();
+            }
+        })
     })
+    
+    function validateAmountFormat() {
+        var amountValue = $("#amount").val();
+        amountValue = +amountValue;
+        if(isNaN(amountValue)) {
+            amountValue = 0;
+        }
+        amountValue = amountValue.toFixed(2);
+        $("#amount").val(amountValue);
+    }
     
     function checkCompany() {
         $("#cmbCompany").parent().removeClass("has-error");
